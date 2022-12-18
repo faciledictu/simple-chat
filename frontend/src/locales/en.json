@@ -1,0 +1,13 @@
+{
+  "translation": {
+    "errors": {
+      "required": "Please fill out"
+    },
+    "login": {
+      "header": "Login",
+      "username": "Your nickname",
+      "password": "Your password",
+      "login": "Log in"
+    }
+  }
+}
