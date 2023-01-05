@@ -1,30 +1,60 @@
-import { useTranslation } from 'react-i18next';
+import axios from 'axios';
 import { useFormik } from 'formik';
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { object, string } from 'yup';
 
-import Container from 'react-bootstrap/Container';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
-import Card from 'react-bootstrap/Card';
-import Form from 'react-bootstrap/Form';
+import Alert from 'react-bootstrap/Alert';
 import Button from 'react-bootstrap/Button';
+import Card from 'react-bootstrap/Card';
+import Col from 'react-bootstrap/Col';
+import Container from 'react-bootstrap/Container';
 import FloatingLabel from 'react-bootstrap/FloatingLabel';
+import Form from 'react-bootstrap/Form';
+import Row from 'react-bootstrap/Row';
+
+import useAuth from '../hooks/useAuth.js';
+import routes from '../routes.js';
+
+const AuthError = () => {
+  const { t } = useTranslation();
+  return <Alert variant="danger">{t('errors.authFailed')}</Alert>;
+};
 
 const Login = () => {
   const { t } = useTranslation();
+  const [authFailed, setAuthFailed] = useState(false);
+  const auth = useAuth();
+  const navigate = useNavigate();
+
+  const validationSchema = object({
+    username: string()
+      .required(t('errors.required')),
+    password: string()
+      .required(t('errors.required')),
+  });
 
   const formik = useFormik({
     initialValues: {
       username: '',
       password: '',
     },
-    validationSchema: object({
-      username: string()
-        .required(t('errors.required')),
-      password: string()
-        .required(t('errors.required')),
-    }),
-    onSubmit: (values) => console.log(values),
+    validationSchema,
+    onSubmit: async (values) => {
+      try {
+        const { data } = await axios.post(routes.login(), values);
+        auth.logIn(data);
+        navigate('/');
+      } catch (error) {
+        formik.setSubmitting(false);
+        if (error.isAxiosError && error.response.status === 401) {
+          setAuthFailed(true);
+          return;
+        }
+        throw error;
+      }
+    },
   });
 
   return (
@@ -35,6 +65,7 @@ const Login = () => {
             <Card.Body as={Row} className="p-5">
               <Form onSubmit={formik.handleSubmit}>
                 <h1 className="mb-4 h4">{t('login.header')}</h1>
+
                 <FloatingLabel
                   controlId="username"
                   label={t('login.username')}
@@ -42,12 +73,17 @@ const Login = () => {
                 >
                   <Form.Control
                     type="text"
-                    placeholder={t('login.username')}
                     value={formik.values.username}
-                    required
+                    placeholder={t('login.username')}
+                    name="username"
+                    isInvalid={authFailed}
                     onChange={formik.handleChange}
+                    required
+                    autoFocus
+                    disabled={formik.isSubmitting}
                   />
                 </FloatingLabel>
+
                 <FloatingLabel
                   controlId="password"
                   label={t('login.password')}
@@ -55,12 +91,18 @@ const Login = () => {
                 >
                   <Form.Control
                     type="password"
-                    placeholder={t('login.password')}
                     value={formik.values.password}
-                    required
+                    placeholder={t('login.password')}
+                    name="password"
+                    isInvalid={authFailed}
                     onChange={formik.handleChange}
+                    required
+                    disabled={formik.isSubmitting}
                   />
                 </FloatingLabel>
+
+                {authFailed ? <AuthError /> : null}
+
                 <Button
                   variant="outline-primary"
                   type="submit"

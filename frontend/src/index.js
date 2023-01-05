@@ -1,14 +1,12 @@
-import React from 'react';
 import { createRoot } from 'react-dom/client';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-import './i18n.js';
-import App from './App.jsx';
+import init from './init.jsx';
 
-const mountNode = document.getElementById('chat');
-const root = createRoot(mountNode);
-root.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-);
+const app = async () => {
+  const mountNode = document.getElementById('chat');
+  const root = createRoot(mountNode);
+  root.render(await init());
+};
+
+app();

@@ -1,13 +1,18 @@
 {
   "translation": {
+    "appName": "Simple Chat",
     "errors": {
-      "required": "Please fill out"
+      "required": "Please fill out",
+      "authFailed": "Wrong username or password"
     },
     "login": {
       "header": "Login",
       "username": "Your nickname",
       "password": "Your password",
       "login": "Log in"
+    },
+    "navbar": {
+      "logOut": "Log out"
     }
   }
 }
