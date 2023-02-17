@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import {
   createBrowserRouter,
   createRoutesFromElements,
@@ -15,7 +15,8 @@ import LoginForm from './LoginForm.jsx';
 import NavBar from './NavBar.jsx';
 
 const AuthProvider = ({ children }) => {
-  const [loggedIn, setLoggedIn] = useState(localStorage.getItem('userId'));
+  const currentloggedInState = !!localStorage.getItem('userId');
+  const [loggedIn, setLoggedIn] = useState(currentloggedInState);
 
   const logIn = (userId) => {
     localStorage.setItem('userId', JSON.stringify(userId));
@@ -27,8 +28,10 @@ const AuthProvider = ({ children }) => {
     setLoggedIn(false);
   };
 
+  const context = useMemo(() => ({ logIn, logOut, loggedIn }));
+
   return (
-    <AuthContext.Provider value={{ logIn, logOut, loggedIn }}>
+    <AuthContext.Provider value={context}>
       {children}
     </AuthContext.Provider>
   );
@@ -42,7 +45,11 @@ const ChatRoute = () => {
 const router = createBrowserRouter(
   createRoutesFromElements(
     <>
-      <Route path="/" element={<ChatRoute />} errorElement={<ErrorPage />} />
+      <Route
+        path="/"
+        element={<ChatRoute />}
+        errorElement={<ErrorPage />}
+      />
       <Route path="login" element={<LoginForm />} />
     </>,
   ),
@@ -50,8 +57,10 @@ const router = createBrowserRouter(
 
 const App = () => (
   <AuthProvider>
-    <NavBar />
-    <RouterProvider router={router} />
+    <div className="d-flex flex-column h-100">
+      <NavBar />
+      <RouterProvider router={router} />
+    </div>
   </AuthProvider>
 );
 

@@ -19,8 +19,8 @@ const AuthButton = () => {
 const NavBar = () => {
   const { t } = useTranslation();
   return (
-    <Navbar bg="light" expand="lg" variant="light">
-      <Container>
+    <Navbar bg="white" expand="lg" variant="light" className="border-bottom">
+      <Container className="p-0">
         <Navbar.Brand href="/">{t('appName')}</Navbar.Brand>
         <AuthButton />
       </Container>
