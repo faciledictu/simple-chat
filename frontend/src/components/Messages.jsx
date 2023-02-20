@@ -1,16 +1,9 @@
-import { useSelector } from 'react-redux';
+import Message from './Message.jsx';
 
-// import { selectors } from '../slices/messagesSlice.js';
-
-const Messages = () => {
-  const currentChannelId = useSelector((state) => state.currentChannel.id);
-
-  return (
-    <div>
-      Messages of channel
-      {currentChannelId}
-    </div>
-  );
-};
+const Messages = ({ content }) => (
+  <div id="messages-box" className="overflow-auto p-3">
+    {content.map(({ id, username, body }) => <Message key={id} author={username} body={body} />)}
+  </div>
+);
 
 export default Messages;

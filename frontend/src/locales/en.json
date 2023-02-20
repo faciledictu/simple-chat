@@ -1,6 +1,7 @@
 {
   "translation": {
     "appName": "Simple Chat",
+    "loading": "Loading...",
     "errors": {
       "required": "Please fill out",
       "authFailed": "Wrong username or password"
@@ -13,6 +14,14 @@
     },
     "navbar": {
       "logOut": "Log out"
+    },
+    "chat": {
+      "channels": "Channels",
+      "newMessage": "New message",
+      "writeMessage": "Write a message...",
+      "send": "Send",
+      "messages_one": "{{count}} message",
+      "messages_other": "{{count}} messages"
     }
   }
 }

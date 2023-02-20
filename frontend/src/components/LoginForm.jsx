@@ -108,6 +108,7 @@ const Login = () => {
                   type="submit"
                   size="lg"
                   className="mb-3 w-100"
+                  disabled={formik.isSubmitting}
                 >
                   {t('login.login')}
                 </Button>

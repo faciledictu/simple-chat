@@ -1,23 +1,19 @@
 import { useSelector, useDispatch } from 'react-redux';
 import Nav from 'react-bootstrap/Nav';
 
-import { selectors } from '../slices/channelsSlice.js';
-import { actions as currentChannelActions } from '../slices/currentChannelSlice.js';
+import * as channelsSlice from '../slices/channelsSlice.js';
 
-const Channels = () => {
+const Channels = ({ currentChannelId }) => {
   const dispatch = useDispatch();
-  const channels = useSelector(selectors.selectAll);
-
+  const channels = useSelector(channelsSlice.selectors.selectAll);
   const navElements = channels.map(({ id, name }) => (
     <Nav.Item key={id}>
       <Nav.Link eventKey={id}>{name}</Nav.Link>
     </Nav.Item>
   ));
 
-  const currentChannelId = useSelector((state) => state.currentChannel.id);
-
   const handleSelect = (id) => {
-    dispatch(currentChannelActions.setCurrentChannel(id));
+    dispatch(channelsSlice.actions.setCurrentChannel(Number(id)));
   };
 
   return (

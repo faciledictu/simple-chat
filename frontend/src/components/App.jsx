@@ -8,6 +8,7 @@ import {
 
 import AuthContext from '../contexts/AuthContext.jsx';
 import useAuth from '../hooks/useAuth.js';
+import useUserId from '../hooks/useUserId.js';
 
 import Chat from './Chat.jsx';
 import ErrorPage from './ErrorPage.jsx';
@@ -15,7 +16,7 @@ import LoginForm from './LoginForm.jsx';
 import NavBar from './NavBar.jsx';
 
 const AuthProvider = ({ children }) => {
-  const currentloggedInState = !!localStorage.getItem('userId');
+  const currentloggedInState = !!useUserId();
   const [loggedIn, setLoggedIn] = useState(currentloggedInState);
 
   const logIn = (userId) => {
@@ -50,7 +51,10 @@ const router = createBrowserRouter(
         element={<ChatRoute />}
         errorElement={<ErrorPage />}
       />
-      <Route path="login" element={<LoginForm />} />
+      <Route
+        path="login"
+        element={<LoginForm />}
+      />
     </>,
   ),
 );
