@@ -13,6 +13,7 @@ import InputGroup from 'react-bootstrap/InputGroup';
 import Spinner from 'react-bootstrap/Spinner';
 
 import routes from '../routes.js';
+import socket from '../socket.js';
 import * as channelsSlice from '../slices/channelsSlice.js';
 import * as messagesSlice from '../slices/messagesSlice.js';
 import Channels from './Channels.jsx';
@@ -44,6 +45,10 @@ const Chat = () => {
     };
 
     fetchData();
+    socket.connect();
+    socket.on('newMessage', (message) => {
+      dispatch(messagesSlice.actions.addMessage(message));
+    });
   }, []);
 
   const currentChannelId = useSelector((state) => (
@@ -62,16 +67,19 @@ const Chat = () => {
       body: '',
     },
     onSubmit: async ({ body }) => {
-      const userId = useUserId();
+      const { username } = useUserId();
 
       const message = {
         body,
-        username: userId.username,
+        username,
         channelId: currentChannelId,
         timestamp: Date.now(),
       };
-      console.log(message);
-      formik.values.body = '';
+      socket.emit('newMessage', message, (response) => {
+        if (response.status === 'ok') {
+          formik.resetForm();
+        }
+      });
     },
   });
 
@@ -95,7 +103,7 @@ const Chat = () => {
                 </p>
               </div>
               <Messages content={channelMessages} />
-              <div className="p-3 mt-auto">
+              <div className="p-3">
                 <Form onSubmit={formik.handleSubmit} className="border rounded-pill overflow-hidden">
                   <InputGroup>
                     <Form.Control
@@ -106,6 +114,7 @@ const Chat = () => {
                       onChange={formik.handleChange}
                       aria-label={t('chat.newMessage')}
                       className="border-0 ps-3 py-0"
+                      style={{ 'box-shadow': 'none' }}
                     />
                     <Button
                       type="submit"
