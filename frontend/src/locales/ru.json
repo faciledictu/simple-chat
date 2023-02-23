@@ -1,7 +1,36 @@
 {
   "translation": {
+    "appName": "Simple Chat",
+    "loading": "Загрузка...",
+    "errors": {
+      "required": "Необходимо заполнить",
+      "authFailed": "Неверные имя пользователя или пароль"
+    },
     "login": {
-      "nickname" : "Ваш ник"
+      "header": "Вход",
+      "username": "Ваш ник",
+      "password": "Пароль",
+      "login": "Войти"
+    },
+    "navbar": {
+      "logOut": "Выйти"
+    },
+    "chat": {
+      "channels": "Каналы",
+      "newMessage": "Новое сообщение",
+      "writeMessage": "Введите сообщение...",
+      "send": "Отправить",
+      "messages_one": "{{count}} сообщение",
+      "messages_few": "{{count}} сообщения",
+      "messages_other": "{{count}} cообщений"
+    },
+    "modals": {
+      "addTitle": "Добавить канал",
+      "renameTitle": "Переименовать канал",
+      "removeTitle": "Удалить канал",
+      "send": "Отправить",
+      "remove": "Удалить",
+      "cancel": "Отменить"
     }
   }
 }

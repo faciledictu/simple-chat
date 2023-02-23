@@ -14,11 +14,15 @@ import Spinner from 'react-bootstrap/Spinner';
 
 import routes from '../routes.js';
 import socket from '../socket.js';
+import useUserId from '../hooks/useUserId.js';
 import * as channelsSlice from '../slices/channelsSlice.js';
 import * as messagesSlice from '../slices/messagesSlice.js';
+import * as modalSlice from '../slices/modalSlice.js';
+
 import Channels from './Channels.jsx';
 import Messages from './Messages.jsx';
-import useUserId from '../hooks/useUserId.js';
+import Modal from './modals/index.jsx';
+import ChannelName from './ChannelName.jsx';
 
 const getAuthHeader = () => {
   const userId = useUserId();
@@ -49,11 +53,26 @@ const Chat = () => {
     socket.on('newMessage', (message) => {
       dispatch(messagesSlice.actions.addMessage(message));
     });
+    socket.on('newChannel', (channel) => {
+      dispatch(channelsSlice.actions.addChannel(channel));
+    });
+    socket.on('renameChannel', (channel) => {
+      dispatch(channelsSlice.actions.addChannel(channel));
+    });
+    socket.on('removeChannel', ({ id }) => {
+      dispatch(channelsSlice.actions.removeChannel(id));
+    });
   }, []);
 
-  const currentChannelId = useSelector((state) => (
-    state.channels.currentChannelId
-  ));
+  const handleOpen = () => {
+    dispatch(modalSlice.actions.open({ type: 'add' }));
+  };
+
+  const modalType = useSelector((state) => state.modal.type);
+
+  const channels = useSelector(channelsSlice.selectors.selectAll);
+
+  const currentChannelId = useSelector((state) => state.channels.currentChannelId);
 
   const currentChannel = useSelector((state) => (
     channelsSlice.selectors.selectById(state, currentChannelId)
@@ -88,15 +107,31 @@ const Chat = () => {
       return (
         <>
           <Col xs={4} md={2} className="border-end pt-5 bg-light">
-            <div className="ps-3">{t('chat.channels')}</div>
-            <Channels currentChannelId={currentChannelId} />
+            <div className="mb-2 d-flex justify-content-between align-items-center">
+              <div className="text-truncate"><b>{t('chat.channels')}</b></div>
+              <Button variant="outline-primary" className="rounded-circle p-0 d-flex align-items-center" onClick={handleOpen}>
+                <svg
+                  version="1.1"
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                  width={20}
+                  height={20}
+                >
+                  <rect x="9.5" y="5" width="1" height="10" />
+                  <rect x="5" y="9.5" width="10" height="1" />
+                </svg>
+                <span className="visually-hidden">+</span>
+              </Button>
+            </div>
+            <Channels channels={channels} currentChannelId={currentChannelId} />
           </Col>
 
           <Col className="p-0 h-100">
             <div className="d-flex flex-column h-100">
               <div className="border-bottom bg-light p-3">
                 <p className="m-0">
-                  <b>{currentChannel.name}</b>
+                  <b><ChannelName name={currentChannel.name} /></b>
                 </p>
                 <p className="m-0 text-muted">
                   {t('chat.messages', { count: channelMessages.length })}
@@ -114,7 +149,7 @@ const Chat = () => {
                       onChange={formik.handleChange}
                       aria-label={t('chat.newMessage')}
                       className="border-0 ps-3 py-0"
-                      style={{ 'box-shadow': 'none' }}
+                      style={{ boxShadow: 'none' }}
                     />
                     <Button
                       type="submit"
@@ -154,11 +189,14 @@ const Chat = () => {
   };
 
   return (
-    <Container className="h-100 my-4 overflow-hidden rounded border">
-      <Row className="h-100 bg-white flex-nowrap">
-        {renderContent()}
-      </Row>
-    </Container>
+    <>
+      <Container className="h-100 my-4 overflow-hidden rounded border">
+        <Row className="h-100 bg-white flex-nowrap">
+          {renderContent()}
+        </Row>
+      </Container>
+      <Modal type={modalType} />
+    </>
   );
 };
 

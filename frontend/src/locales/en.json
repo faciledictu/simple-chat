@@ -4,7 +4,9 @@
     "loading": "Loading...",
     "errors": {
       "required": "Please fill out",
-      "authFailed": "Wrong username or password"
+      "authFailed": "Wrong username or password",
+      "outOfLenght": "Channel name should be 3 to 20 characters",
+      "notUnique": "Channel name should be unique"
     },
     "login": {
       "header": "Login",
@@ -17,11 +19,23 @@
     },
     "chat": {
       "channels": "Channels",
+      "rename": "Rename",
+      "remove": "Delete",
       "newMessage": "New message",
       "writeMessage": "Write a message...",
       "send": "Send",
       "messages_one": "{{count}} message",
       "messages_other": "{{count}} messages"
+    },
+    "modals": {
+      "addTitle": "Add channel",
+      "renameTitle": "Rename channel",
+      "removeTitle": "Delete channel",
+      "removeWarning": "This channel and all its messages will be deleted",
+      "channelName": "Channel name",
+      "send": "Send",
+      "remove": "Delete",
+      "cancel": "Cancel"
     }
   }
 }
