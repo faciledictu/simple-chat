@@ -13,7 +13,7 @@ import InputGroup from 'react-bootstrap/InputGroup';
 import Spinner from 'react-bootstrap/Spinner';
 
 import routes from '../routes.js';
-import socket from '../socket.js';
+import useSocket from '../hooks/useSocket.js';
 import useUserId from '../hooks/useUserId.js';
 import * as channelsSlice from '../slices/channelsSlice.js';
 import * as messagesSlice from '../slices/messagesSlice.js';
@@ -37,6 +37,7 @@ const getAuthHeader = () => {
 const Chat = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
+  const socket = useSocket();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -50,18 +51,6 @@ const Chat = () => {
 
     fetchData();
     socket.connect();
-    socket.on('newMessage', (message) => {
-      dispatch(messagesSlice.actions.addMessage(message));
-    });
-    socket.on('newChannel', (channel) => {
-      dispatch(channelsSlice.actions.addChannel(channel));
-    });
-    socket.on('renameChannel', (channel) => {
-      dispatch(channelsSlice.actions.addChannel(channel));
-    });
-    socket.on('removeChannel', ({ id }) => {
-      dispatch(channelsSlice.actions.removeChannel(id));
-    });
   }, []);
 
   const handleOpen = () => {

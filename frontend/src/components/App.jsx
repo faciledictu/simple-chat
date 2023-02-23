@@ -5,8 +5,13 @@ import {
   RouterProvider,
   Route,
 } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { io } from 'socket.io-client';
 
-import AuthContext from '../contexts/AuthContext.jsx';
+import * as channelsSlice from '../slices/channelsSlice.js';
+import * as messagesSlice from '../slices/messagesSlice.js';
+import AuthContext from '../contexts/AuthContext.js';
+import SocketContext from '../contexts/SocketContext.js';
 import useAuth from '../hooks/useAuth.js';
 import useUserId from '../hooks/useUserId.js';
 
@@ -38,6 +43,32 @@ const AuthProvider = ({ children }) => {
   );
 };
 
+const SocketProvider = ({ children }) => {
+  const socket = io('/', { autoConnect: false });
+  const dispatch = useDispatch();
+
+  socket.on('newMessage', (message) => {
+    dispatch(messagesSlice.actions.addMessage(message));
+  });
+  socket.on('newChannel', (channel) => {
+    dispatch(channelsSlice.actions.addChannel(channel));
+  });
+  socket.on('renameChannel', (channel) => {
+    dispatch(channelsSlice.actions.addChannel(channel));
+  });
+  socket.on('removeChannel', ({ id }) => {
+    dispatch(channelsSlice.actions.removeChannel(id));
+  });
+
+  const context = socket;
+
+  return (
+    <SocketContext.Provider value={context}>
+      {children}
+    </SocketContext.Provider>
+  );
+};
+
 const ChatRoute = () => {
   const auth = useAuth();
   return auth.loggedIn ? <Chat /> : <LoginForm />;
@@ -60,12 +91,14 @@ const router = createBrowserRouter(
 );
 
 const App = () => (
-  <AuthProvider>
-    <div className="d-flex flex-column h-100">
-      <NavBar />
-      <RouterProvider router={router} />
-    </div>
-  </AuthProvider>
+  <SocketProvider>
+    <AuthProvider>
+      <div className="d-flex flex-column h-100">
+        <NavBar />
+        <RouterProvider router={router} />
+      </div>
+    </AuthProvider>
+  </SocketProvider>
 );
 
 export default App;

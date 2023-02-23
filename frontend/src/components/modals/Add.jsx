@@ -8,13 +8,14 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import Modal from 'react-bootstrap/Modal';
 
-import socket from '../../socket.js';
+import useSocket from '../../hooks/useSocket.js';
 import * as channelsSlice from '../../slices/channelsSlice.js';
 import * as modalSlice from '../../slices/modalSlice.js';
 
 const Add = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
+  const socket = useSocket();
 
   const handleClose = () => dispatch(modalSlice.actions.close());
 
