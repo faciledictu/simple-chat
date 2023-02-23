@@ -13,8 +13,8 @@ import InputGroup from 'react-bootstrap/InputGroup';
 import Spinner from 'react-bootstrap/Spinner';
 
 import routes from '../routes.js';
+import useAuth from '../hooks/useAuth.js';
 import useSocket from '../hooks/useSocket.js';
-import useUserId from '../hooks/useUserId.js';
 import * as channelsSlice from '../slices/channelsSlice.js';
 import * as messagesSlice from '../slices/messagesSlice.js';
 import * as modalSlice from '../slices/modalSlice.js';
@@ -24,10 +24,8 @@ import Messages from './Messages.jsx';
 import Modal from './modals/index.jsx';
 import ChannelName from './ChannelName.jsx';
 
-const getAuthHeader = () => {
-  const userId = useUserId();
-
-  if (userId && userId.token) {
+const getAuthHeader = (userId) => {
+  if (userId.token) {
     return { Authorization: `Bearer ${userId.token}` };
   }
 
@@ -38,11 +36,12 @@ const Chat = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const socket = useSocket();
+  const { userId } = useAuth();
 
   useEffect(() => {
     const fetchData = async () => {
       const route = routes.data();
-      const headers = getAuthHeader();
+      const headers = getAuthHeader(userId);
       const { data } = await axios.get(route, { headers });
       dispatch(channelsSlice.actions.addChannels(data.channels));
       dispatch(messagesSlice.actions.addMessages(data.messages));
@@ -51,6 +50,10 @@ const Chat = () => {
 
     fetchData();
     socket.connect();
+
+    return () => {
+      socket.disconnect();
+    };
   }, []);
 
   const handleOpen = () => {
@@ -75,11 +78,9 @@ const Chat = () => {
       body: '',
     },
     onSubmit: async ({ body }) => {
-      const { username } = useUserId();
-
       const message = {
         body,
-        username,
+        username: userId.username,
         channelId: currentChannelId,
         timestamp: Date.now(),
       };

@@ -13,7 +13,6 @@ import * as messagesSlice from '../slices/messagesSlice.js';
 import AuthContext from '../contexts/AuthContext.js';
 import SocketContext from '../contexts/SocketContext.js';
 import useAuth from '../hooks/useAuth.js';
-import useUserId from '../hooks/useUserId.js';
 
 import Chat from './Chat.jsx';
 import ErrorPage from './ErrorPage.jsx';
@@ -21,11 +20,13 @@ import LoginForm from './LoginForm.jsx';
 import NavBar from './NavBar.jsx';
 
 const AuthProvider = ({ children }) => {
-  const currentloggedInState = !!useUserId();
+  const userId = JSON.parse(localStorage.getItem('userId'));
+
+  const currentloggedInState = !!userId;
   const [loggedIn, setLoggedIn] = useState(currentloggedInState);
 
-  const logIn = (userId) => {
-    localStorage.setItem('userId', JSON.stringify(userId));
+  const logIn = (userData) => {
+    localStorage.setItem('userId', JSON.stringify(userData));
     setLoggedIn(true);
   };
 
@@ -34,7 +35,9 @@ const AuthProvider = ({ children }) => {
     setLoggedIn(false);
   };
 
-  const context = useMemo(() => ({ logIn, logOut, loggedIn }));
+  const context = useMemo(() => ({
+    logIn, logOut, loggedIn, userId,
+  }));
 
   return (
     <AuthContext.Provider value={context}>
@@ -61,7 +64,7 @@ const SocketProvider = ({ children }) => {
   });
 
   const context = socket;
-
+  console.log('recreate socket');
   return (
     <SocketContext.Provider value={context}>
       {children}

@@ -1,10 +1,13 @@
 {
   "translation": {
+    "language": "Русский",
     "appName": "Simple Chat",
     "loading": "Загрузка...",
     "errors": {
       "required": "Необходимо заполнить",
-      "authFailed": "Неверные имя пользователя или пароль"
+      "authFailed": "Неверные имя пользователя или пароль",
+      "outOfLenght": "От 3 до 20 символов",
+      "notUnique": "Channel name should be unique"
     },
     "login": {
       "header": "Вход",
@@ -17,17 +20,21 @@
     },
     "chat": {
       "channels": "Каналы",
+      "rename": "Переименовать",
+      "remove": "Удалить",
       "newMessage": "Новое сообщение",
       "writeMessage": "Введите сообщение...",
       "send": "Отправить",
       "messages_one": "{{count}} сообщение",
       "messages_few": "{{count}} сообщения",
-      "messages_other": "{{count}} cообщений"
+      "messages_many": "{{count}} cообщений"
     },
     "modals": {
       "addTitle": "Добавить канал",
       "renameTitle": "Переименовать канал",
       "removeTitle": "Удалить канал",
+      "removeWarning": "Этот канал и все сообщения в нем будут удалены",
+      "channelName": "Имя канала",
       "send": "Отправить",
       "remove": "Удалить",
       "cancel": "Отменить"

@@ -44,7 +44,6 @@ const Login = () => {
     onSubmit: async (values) => {
       try {
         const { data } = await axios.post(routes.login(), values);
-        console.log(auth);
         auth.logIn(data);
         navigate('/');
       } catch (error) {

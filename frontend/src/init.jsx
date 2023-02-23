@@ -14,17 +14,18 @@ const init = async () => {
     .use(initReactI18next)
     .init({
       resources,
-      fallbackLng: 'en',
+      lng: 'en',
+      fallbackLng: ['en', 'ru'],
     });
 
   return (
-    <React.StrictMode>
-      <I18nextProvider i18n={i18n}>
-        <Provider store={store}>
-          <App />
-        </Provider>
-      </I18nextProvider>
-    </React.StrictMode>
+  // <React.StrictMode>
+    <I18nextProvider i18n={i18n}>
+      <Provider store={store}>
+        <App />
+      </Provider>
+    </I18nextProvider>
+  // </React.StrictMode>
   );
 };
 
