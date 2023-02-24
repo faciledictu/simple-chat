@@ -4,6 +4,7 @@
     "appName": "Simple Chat",
     "loading": "Загрузка...",
     "errors": {
+      "noConnection": "Ошибка соединения",
       "required": "Необходимо заполнить",
       "authFailed": "Неверные имя пользователя или пароль",
       "userExists": "Такой пользователь уже существует",
@@ -43,8 +44,11 @@
     },
     "modals": {
       "addTitle": "Добавить канал",
+      "addSuccess": "Канал создан",
       "renameTitle": "Переименовать канал",
+      "renameSuccess": "Канал переименован",
       "removeTitle": "Удалить канал",
+      "removeSuccess": "Канал удалён",
       "removeWarning": "Этот канал и все сообщения в нем будут удалены",
       "channelName": "Имя канала",
       "send": "Отправить",

@@ -1,6 +1,6 @@
 const ChannelName = ({ name }) => (
   <>
-    <span className="me-1">#</span>
+    <span className="border rounded px-1 me-1 fw-normal">#</span>
     {name}
   </>
 );

@@ -1,6 +1,7 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { useFormik } from 'formik';
 import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
 
 import { object, string } from 'yup';
 import Button from 'react-bootstrap/Button';
@@ -15,7 +16,7 @@ import * as modalSlice from '../../slices/modalSlice.js';
 const Rename = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const socket = useSocket();
+  const { renameChannel } = useSocket();
 
   const inputRef = useAutoFocus();
 
@@ -36,14 +37,17 @@ const Rename = () => {
   });
 
   const formik = useFormik({
-    initialValues: { name: '' }, // channelName
+    initialValues: { name: channelName },
     validationSchema,
     onSubmit: async ({ name }) => {
-      socket.emit('renameChannel', { id: channelId, name }, (response) => {
-        if (response.status === 'ok') {
-          handleClose();
-        }
-      });
+      try {
+        await renameChannel(channelId, name);
+        toast.success(t('modals.renameSuccess'));
+        handleClose();
+      } catch (error) {
+        console.log(error);
+        toast.error(t('errors.noConnection'));
+      }
     },
   });
 

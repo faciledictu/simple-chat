@@ -1,6 +1,8 @@
+// import { useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useFormik } from 'formik';
 import { object, string } from 'yup';
+import { toast } from 'react-toastify';
 
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
@@ -8,11 +10,13 @@ import InputGroup from 'react-bootstrap/InputGroup';
 
 import useAuth from '../hooks/useAuth.js';
 import useSocket from '../hooks/useSocket.js';
+import useAutoFocus from '../hooks/useAutoFocus.js';
 
 const MessageForm = ({ channelId }) => {
   const { t } = useTranslation();
-  const socket = useSocket();
+  const { sendMessage } = useSocket();
   const { userId } = useAuth();
+  const messageInputRef = useAutoFocus();
 
   const validationSchema = object({
     body: string()
@@ -27,17 +31,22 @@ const MessageForm = ({ channelId }) => {
     validationSchema,
     validateOnMount: true,
     onSubmit: async ({ body }) => {
+      console.log(formik);
       const message = {
         body,
         username: userId.username,
         channelId,
         timestamp: Date.now(),
       };
-      socket.emit('newMessage', message, (response) => {
-        if (response.status === 'ok') {
-          formik.resetForm();
-        }
-      });
+      try {
+        await sendMessage(message);
+        formik.resetForm();
+      } catch (error) {
+        console.log(error);
+        toast.error(t('errors.noConnection'));
+      } finally {
+        messageInputRef.current.focus();
+      }
     },
   });
 
@@ -45,7 +54,6 @@ const MessageForm = ({ channelId }) => {
     <Form className="p-3" onSubmit={formik.handleSubmit}>
       <InputGroup>
         <Form.Control
-          autoFocus
           type="text"
           name="body"
           value={formik.values.body}
@@ -54,6 +62,8 @@ const MessageForm = ({ channelId }) => {
           onChange={formik.handleChange}
           aria-label={t('chat.newMessage')}
           className="ps-3 pe-5 rounded-pill w-100"
+          autoFocus
+          ref={messageInputRef}
         />
         <Button
           type="submit"

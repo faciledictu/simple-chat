@@ -1,5 +1,7 @@
+import { useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
 
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
@@ -12,19 +14,26 @@ import ChannelName from '../ChannelName.jsx';
 const Remove = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const socket = useSocket();
+  const submitRef = useRef();
+  const { removeChannel } = useSocket();
 
   const { channelId, channelName } = useSelector((state) => state.modal.context);
 
   const handleClose = () => dispatch(modalSlice.actions.close());
 
   const handleSubmit = async (e) => {
+    console.log(e);
     e.preventDefault();
-    socket.emit('removeChannel', { id: channelId }, (response) => {
-      if (response.status === 'ok') {
-        handleClose();
-      }
-    });
+    submitRef.current.disabled = true;
+    try {
+      await removeChannel(channelId);
+      handleClose();
+      toast.success(t('modals.removeSuccess'));
+    } catch (error) {
+      console.log(error);
+      toast.error(t('errors.noConnection'));
+      submitRef.current.disabled = false;
+    }
   };
 
   return (
@@ -43,7 +52,7 @@ const Remove = () => {
             <Button variant="outline-primary" onClick={handleClose} className="col-3">
               {t('modals.cancel')}
             </Button>
-            <Button variant="danger" type="submit" className="col-3">
+            <Button variant="danger" type="submit" className="col-3" ref={submitRef}>
               {t('modals.remove')}
             </Button>
           </Form.Group>

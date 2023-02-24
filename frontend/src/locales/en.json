@@ -4,6 +4,7 @@
     "appName": "Simple Chat",
     "loading": "Loading...",
     "errors": {
+      "noConnection": "Connection error",
       "required": "Please fill out",
       "authFailed": "Wrong username or password",
       "userExists": "This user already exists",
@@ -42,9 +43,12 @@
     },
     "modals": {
       "addTitle": "Add channel",
+      "addSuccess": "Channel added",
       "renameTitle": "Rename channel",
+      "renameSuccess": "Channel renamed",
       "removeTitle": "Delete channel",
       "removeWarning": "This channel and all its messages will be deleted",
+      "removeSuccess": "Channel deleted",
       "channelName": "Channel name",
       "send": "Send",
       "remove": "Delete",

@@ -1,8 +1,10 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { useFormik } from 'formik';
 import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
 
 import { object, string } from 'yup';
+import Alert from 'react-bootstrap/Alert';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import Modal from 'react-bootstrap/Modal';
@@ -14,7 +16,7 @@ import * as modalSlice from '../../slices/modalSlice.js';
 const Add = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const socket = useSocket();
+  const { createChannel } = useSocket();
 
   const handleClose = () => dispatch(modalSlice.actions.close());
 
@@ -33,16 +35,17 @@ const Add = () => {
     initialValues: { name: '' },
     validationSchema,
     onSubmit: async ({ name }) => {
-      socket.emit('newChannel', { name }, (response) => {
-        if (response.status === 'ok') {
-          // dispatch(channelsSlice.actions.addChannel(response.data));
-          dispatch(channelsSlice.actions.setCurrentChannel(response.data.id));
-          handleClose();
-        }
-      });
+      try {
+        await createChannel(name);
+        handleClose();
+        toast.success(t('modals.addSuccess'));
+      } catch (error) {
+        console.log(error);
+        toast.error(t('errors.noConnection'));
+      }
     },
   });
-
+  console.log(formik);
   const nameIsValid = !formik.errors.name && formik.values.name !== '';
   const nameIsInvalid = !!formik.errors.name && formik.values.name !== '';
 
@@ -55,12 +58,13 @@ const Add = () => {
       <Modal.Body>
         <Form onSubmit={formik.handleSubmit}>
           <Form.Group className="mb-3 position-relative" controlId="name">
-            <Form.Control autoFocus isValid={nameIsValid} isInvalid={nameIsInvalid} type="text" value={formik.values.name} onChange={formik.handleChange} disabled={formik.isSubmitting} />
+            <Form.Control autoFocus isValid={nameIsValid} isInvalid={nameIsInvalid} type="text" value={formik.values.name} onChange={formik.handleChange} onBlur={formik.handleBlur} disabled={formik.isSubmitting} />
             <Form.Label className="visually-hidden">
               {t('modals.name')}
             </Form.Label>
             <Form.Control.Feedback type="invalid" tooltip>{t(formik.errors.name)}</Form.Control.Feedback>
           </Form.Group>
+          {formik.status === 'noConnection' ? <Alert variant="danger">{t('errors.noConnection')}</Alert> : null }
           <Form.Group className="d-flex gap-2 col-12 justify-content-end">
             <Button variant="outline-primary" onClick={handleClose} className="col-3">
               {t('modals.cancel')}

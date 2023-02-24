@@ -28,7 +28,7 @@ const getAuthHeader = (userId) => {
 const Chat = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const socket = useSocket();
+  const { connect, disconnect } = useSocket();
   const { userId } = useAuth();
 
   useEffect(() => {
@@ -42,10 +42,10 @@ const Chat = () => {
     };
 
     fetchData();
-    socket.connect();
+    connect();
 
     return () => {
-      socket.disconnect();
+      disconnect();
     };
   }, []);
 

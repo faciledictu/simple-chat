@@ -6,6 +6,7 @@ import {
 } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { io } from 'socket.io-client';
+import { ToastContainer, Slide } from 'react-toastify';
 
 import * as channelsSlice from '../slices/channelsSlice.js';
 import * as messagesSlice from '../slices/messagesSlice.js';
@@ -18,6 +19,8 @@ import ErrorPage from './ErrorPage.jsx';
 import LoginForm from './LoginForm.jsx';
 import SignUpForm from './SignUpForm.jsx';
 import NavBar from './NavBar.jsx';
+
+import 'react-toastify/dist/ReactToastify.css';
 
 const AuthProvider = ({ children }) => {
   const userId = JSON.parse(localStorage.getItem('userId'));
@@ -47,6 +50,8 @@ const AuthProvider = ({ children }) => {
 };
 
 const SocketProvider = ({ children }) => {
+  const TIMEOUT = 5000;
+
   const socket = io('/', { autoConnect: false });
   const dispatch = useDispatch();
 
@@ -63,8 +68,37 @@ const SocketProvider = ({ children }) => {
     dispatch(channelsSlice.actions.removeChannel(id));
   });
 
-  const context = socket;
-  console.log('recreate socket');
+  const sendMessage = async (message) => {
+    await socket.timeout(TIMEOUT).emitWithAck('newMessage', { ...message, timestamp: Date.now() });
+  };
+
+  const createChannel = async (name) => {
+    const { data } = await socket.timeout(TIMEOUT).emitWithAck('newChannel', { name });
+    dispatch(channelsSlice.actions.addChannel(data));
+    dispatch(channelsSlice.actions.setCurrentChannel(data.id));
+  };
+
+  const renameChannel = async (id, newName) => {
+    await socket.timeout(TIMEOUT).emitWithAck('renameChannel', { id, name: newName });
+  };
+
+  const removeChannel = async (id) => {
+    await socket.timeout(TIMEOUT).emitWithAck('removeChannel', { id });
+  };
+
+  const connect = () => {
+    socket.connect();
+  };
+
+  const disconnect = () => {
+    socket.off();
+    socket.disconnect();
+  };
+
+  const context = useMemo(() => ({
+    connect, disconnect, sendMessage, createChannel, renameChannel, removeChannel,
+  }));
+
   return (
     <SocketContext.Provider value={context}>
       {children}
@@ -89,6 +123,18 @@ const App = () => (
             <Route path="signup" element={<SignUpForm />} />
           </Routes>
         </div>
+        <ToastContainer
+          position="top-right"
+          autoClose={2000}
+          hideProgressBar
+          newestOnTop={false}
+          closeOnClick
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="light"
+          transition={Slide}
+        />
       </BrowserRouter>
     </AuthProvider>
   </SocketProvider>
