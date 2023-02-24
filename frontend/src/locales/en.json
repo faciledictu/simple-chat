@@ -6,9 +6,10 @@
     "errors": {
       "required": "Please fill out",
       "authFailed": "Wrong username or password",
+      "userExists": "This user already exists",
       "outOfLenght": "Should be 3 to 20 characters",
       "notUnique": "A channel with this name already exists",
-      "min6chars": "Minimum 6 characters",
+      "min6chars": "Should be at least 6 characters",
       "notSame": "Passwords should match"
     },
     "login": {
