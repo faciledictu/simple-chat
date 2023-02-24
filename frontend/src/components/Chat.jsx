@@ -96,7 +96,7 @@ const Chat = () => {
     if (currentChannel && channelMessages) {
       return (
         <>
-          <Col xs={4} md={2} className="border-end pt-5 bg-light">
+          <Col xs={4} md={3} className="border-end pt-5 bg-light">
             <div className="mb-2 d-flex justify-content-between align-items-center">
               <div className="text-truncate"><b>{t('chat.channels')}</b></div>
               <Button variant="outline-primary" className="rounded-circle p-0 d-flex align-items-center" onClick={handleOpen}>
