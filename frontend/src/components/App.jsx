@@ -1,8 +1,7 @@
 import { useState, useMemo } from 'react';
 import {
-  createBrowserRouter,
-  createRoutesFromElements,
-  RouterProvider,
+  BrowserRouter,
+  Routes,
   Route,
 } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
@@ -17,6 +16,7 @@ import useAuth from '../hooks/useAuth.js';
 import Chat from './Chat.jsx';
 import ErrorPage from './ErrorPage.jsx';
 import LoginForm from './LoginForm.jsx';
+import SignUpForm from './SignUpForm.jsx';
 import NavBar from './NavBar.jsx';
 
 const AuthProvider = ({ children }) => {
@@ -77,29 +77,19 @@ const ChatRoute = () => {
   return auth.loggedIn ? <Chat /> : <LoginForm />;
 };
 
-const router = createBrowserRouter(
-  createRoutesFromElements(
-    <>
-      <Route
-        path="/"
-        element={<ChatRoute />}
-        errorElement={<ErrorPage />}
-      />
-      <Route
-        path="login"
-        element={<LoginForm />}
-      />
-    </>,
-  ),
-);
-
 const App = () => (
   <SocketProvider>
     <AuthProvider>
-      <div className="d-flex flex-column h-100">
-        <NavBar />
-        <RouterProvider router={router} />
-      </div>
+      <BrowserRouter>
+        <div className="d-flex flex-column h-100">
+          <NavBar />
+          <Routes>
+            <Route path="/" element={<ChatRoute />} errorElement={<ErrorPage />} />
+            <Route path="login" element={<LoginForm />} />
+            <Route path="signup" element={<SignUpForm />} />
+          </Routes>
+        </div>
+      </BrowserRouter>
     </AuthProvider>
   </SocketProvider>
 );

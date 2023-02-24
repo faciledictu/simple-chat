@@ -1,3 +1,5 @@
+import { Link } from 'react-router-dom';
+
 import Button from 'react-bootstrap/Button';
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
@@ -47,9 +49,11 @@ const AuthButton = () => {
 const NavBar = () => {
   const { t } = useTranslation();
   return (
-    <Navbar bg="white" expand="lg" variant="light" className="border-bottom">
+    <Navbar bg="white" expand="sm" variant="light" className="border-bottom">
       <Container className="p-0 gap-2">
-        <Navbar.Brand href="/">{t('appName')}</Navbar.Brand>
+        <Navbar.Brand as={Link} to="/">
+          {t('appName')}
+        </Navbar.Brand>
         <Navbar.Collapse id="navbar-settings">
           <Nav className="me-auto">
             <LanguageSelector />
