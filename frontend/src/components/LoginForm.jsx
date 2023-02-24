@@ -18,11 +18,6 @@ import Row from 'react-bootstrap/Row';
 import useAuth from '../hooks/useAuth.js';
 import routes from '../routes.js';
 
-const AuthError = () => {
-  const { t } = useTranslation();
-  return <Alert variant="danger">{t('errors.authFailed')}</Alert>;
-};
-
 const Login = () => {
   const { t } = useTranslation();
   const [authFailed, setAuthFailed] = useState(false);
@@ -95,7 +90,7 @@ const Login = () => {
                   />
                 </FloatingLabel>
 
-                {authFailed ? <AuthError /> : null}
+                {authFailed ? <Alert variant="danger">{t('errors.authFailed')}</Alert> : null}
 
                 <Button
                   variant="outline-primary"
