@@ -1,4 +1,3 @@
-import { useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useFormik } from 'formik';
 import { useTranslation } from 'react-i18next';
@@ -25,9 +24,9 @@ const Add = () => {
   const validationSchema = object({
     name: string()
       .trim()
-      .notOneOf(existingChannelNames, t('errors.notUnique'))
-      .min(3, t('errors.outOfLenght'))
-      .max(20, t('errors.outOfLenght')),
+      .notOneOf(existingChannelNames, 'errors.notUnique')
+      .min(3, 'errors.outOfLenght')
+      .max(20, 'errors.outOfLenght'),
   });
 
   const formik = useFormik({
@@ -44,11 +43,6 @@ const Add = () => {
     },
   });
 
-  const inputRef = useRef();
-  useEffect(() => {
-    inputRef.current.focus();
-  }, []);
-
   const nameIsValid = !formik.errors.name && formik.values.name !== '';
   const nameIsInvalid = !!formik.errors.name && formik.values.name !== '';
 
@@ -60,14 +54,14 @@ const Add = () => {
 
       <Modal.Body>
         <Form onSubmit={formik.handleSubmit}>
-          <Form.Group className="mb-3" controlId="name">
-            <Form.Control isValid={nameIsValid} isInvalid={nameIsInvalid} ref={inputRef} type="text" value={formik.values.name} onChange={formik.handleChange} />
+          <Form.Group className="mb-3 position-relative" controlId="name">
+            <Form.Control autoFocus isValid={nameIsValid} isInvalid={nameIsInvalid} type="text" value={formik.values.name} onChange={formik.handleChange} />
             <Form.Label className="visually-hidden">
               {t('modals.name')}
             </Form.Label>
-            <Form.Control.Feedback type="invalid">{formik.errors.name}</Form.Control.Feedback>
+            <Form.Control.Feedback type="invalid" tooltip>{t(formik.errors.name)}</Form.Control.Feedback>
           </Form.Group>
-          <Form.Group className="d-flex gap-2 col-12 justify-content-center">
+          <Form.Group className="d-flex gap-2 col-12 justify-content-end">
             <Button variant="outline-primary" onClick={handleClose} className="col-3">
               {t('modals.cancel')}
             </Button>
