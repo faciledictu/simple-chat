@@ -8,11 +8,15 @@ const scrollToMarker = (marker, behavior = 'auto') => {
   });
 };
 
-const Messages = ({ content }) => {
+const Messages = ({ channelId, content }) => {
   const scrollRef = useRef();
 
   useEffect(() => {
     scrollToMarker(scrollRef.current);
+  }, [channelId]);
+
+  useEffect(() => {
+    scrollToMarker(scrollRef.current, 'smooth');
   }, [content.length]);
 
   return (

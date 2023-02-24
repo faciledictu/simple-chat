@@ -21,7 +21,7 @@ const Message = ({ author, body }) => {
   return (
     <div className={`d-flex mb-3 justify-content-${appearance.justify}`}>
       <div>
-        <div className={`px-3 text-${appearance.authorColour} text-${appearance.justify}`}>{author}</div>
+        <div className={`px-3 text-${appearance.authorColour}`}>{author}</div>
         <div className={`px-3 py-2 rounded-4 text-break text-bg-${appearance.bgColour}`}>
           {body}
         </div>

@@ -55,7 +55,7 @@ const Add = () => {
       <Modal.Body>
         <Form onSubmit={formik.handleSubmit}>
           <Form.Group className="mb-3 position-relative" controlId="name">
-            <Form.Control autoFocus isValid={nameIsValid} isInvalid={nameIsInvalid} type="text" value={formik.values.name} onChange={formik.handleChange} />
+            <Form.Control autoFocus isValid={nameIsValid} isInvalid={nameIsInvalid} type="text" value={formik.values.name} onChange={formik.handleChange} disabled={formik.isSubmitting} />
             <Form.Label className="visually-hidden">
               {t('modals.name')}
             </Form.Label>
