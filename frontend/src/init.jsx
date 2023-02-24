@@ -19,13 +19,11 @@ const init = async () => {
     });
 
   return (
-  // <React.StrictMode>
     <I18nextProvider i18n={i18n}>
       <Provider store={store}>
         <App />
       </Provider>
     </I18nextProvider>
-  // </React.StrictMode>
   );
 };
 

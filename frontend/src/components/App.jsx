@@ -7,12 +7,14 @@ import {
 import { useDispatch } from 'react-redux';
 import { io } from 'socket.io-client';
 import { ToastContainer, Slide } from 'react-toastify';
+import axios from 'axios';
 
 import * as channelsSlice from '../slices/channelsSlice.js';
 import * as messagesSlice from '../slices/messagesSlice.js';
 import AuthContext from '../contexts/AuthContext.js';
-import SocketContext from '../contexts/SocketContext.js';
+import ServerContext from '../contexts/ServerContext.js';
 import useAuth from '../hooks/useAuth.js';
+import routes from '../routes.js';
 
 import Chat from './Chat.jsx';
 import ErrorPage from './ErrorPage.jsx';
@@ -28,8 +30,9 @@ const AuthProvider = ({ children }) => {
   const currentloggedInState = !!userId;
   const [loggedIn, setLoggedIn] = useState(currentloggedInState);
 
-  const logIn = (userData) => {
-    localStorage.setItem('userId', JSON.stringify(userData));
+  const logIn = async (userData) => {
+    const { data } = await axios.post(routes.login(), userData);
+    localStorage.setItem('userId', JSON.stringify(data));
     setLoggedIn(true);
   };
 
@@ -38,8 +41,14 @@ const AuthProvider = ({ children }) => {
     setLoggedIn(false);
   };
 
+  const signUp = async (userData) => {
+    const { data } = await axios.post(routes.signup(), userData);
+    localStorage.setItem('userId', JSON.stringify(data));
+    setLoggedIn(true);
+  };
+
   const context = useMemo(() => ({
-    logIn, logOut, loggedIn, userId,
+    logIn, signUp, logOut, loggedIn, userId,
   }));
 
   return (
@@ -49,24 +58,21 @@ const AuthProvider = ({ children }) => {
   );
 };
 
-const SocketProvider = ({ children }) => {
+const ServerProvider = ({ children }) => {
   const TIMEOUT = 5000;
 
-  const socket = io('/', { autoConnect: false });
-  const dispatch = useDispatch();
+  const getAuthHeader = (userId) => {
+    if (userId.token) {
+      return { Authorization: `Bearer ${userId.token}` };
+    }
 
-  socket.on('newMessage', (message) => {
-    dispatch(messagesSlice.actions.addMessage(message));
-  });
-  socket.on('newChannel', (channel) => {
-    dispatch(channelsSlice.actions.addChannel(channel));
-  });
-  socket.on('renameChannel', (channel) => {
-    dispatch(channelsSlice.actions.addChannel(channel));
-  });
-  socket.on('removeChannel', ({ id }) => {
-    dispatch(channelsSlice.actions.removeChannel(id));
-  });
+    return {};
+  };
+
+  const dispatch = useDispatch();
+  const { userId } = useAuth();
+
+  const socket = io('/', { autoConnect: false });
 
   const sendMessage = async (message) => {
     await socket.timeout(TIMEOUT).emitWithAck('newMessage', { ...message, timestamp: Date.now() });
@@ -86,23 +92,50 @@ const SocketProvider = ({ children }) => {
     await socket.timeout(TIMEOUT).emitWithAck('removeChannel', { id });
   };
 
-  const connect = () => {
+  const connectSocket = () => {
     socket.connect();
+    socket.on('newMessage', (message) => {
+      dispatch(messagesSlice.actions.addMessage(message));
+    });
+    socket.on('newChannel', (channel) => {
+      dispatch(channelsSlice.actions.addChannel(channel));
+    });
+    socket.on('renameChannel', (channel) => {
+      dispatch(channelsSlice.actions.addChannel(channel));
+    });
+    socket.on('removeChannel', ({ id }) => {
+      dispatch(channelsSlice.actions.removeChannel(id));
+    });
   };
 
-  const disconnect = () => {
+  const disconnectSocket = () => {
     socket.off();
     socket.disconnect();
   };
 
+  const fetchData = async () => {
+    const route = routes.data();
+    const headers = getAuthHeader(userId);
+    const { data } = await axios.get(route, { headers });
+    dispatch(channelsSlice.actions.addChannels(data.channels));
+    dispatch(messagesSlice.actions.addMessages(data.messages));
+    dispatch(channelsSlice.actions.setCurrentChannel(data.currentChannelId));
+  };
+
   const context = useMemo(() => ({
-    connect, disconnect, sendMessage, createChannel, renameChannel, removeChannel,
+    fetchData,
+    connectSocket,
+    sendMessage,
+    createChannel,
+    renameChannel,
+    removeChannel,
+    disconnectSocket,
   }));
 
   return (
-    <SocketContext.Provider value={context}>
+    <ServerContext.Provider value={context}>
       {children}
-    </SocketContext.Provider>
+    </ServerContext.Provider>
   );
 };
 
@@ -112,8 +145,8 @@ const ChatRoute = () => {
 };
 
 const App = () => (
-  <SocketProvider>
-    <AuthProvider>
+  <AuthProvider>
+    <ServerProvider>
       <BrowserRouter>
         <div className="d-flex flex-column h-100">
           <NavBar />
@@ -136,8 +169,8 @@ const App = () => (
           transition={Slide}
         />
       </BrowserRouter>
-    </AuthProvider>
-  </SocketProvider>
+    </ServerProvider>
+  </AuthProvider>
 );
 
 export default App;

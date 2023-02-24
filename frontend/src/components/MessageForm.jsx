@@ -9,12 +9,12 @@ import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
 
 import useAuth from '../hooks/useAuth.js';
-import useSocket from '../hooks/useSocket.js';
+import useServer from '../hooks/useServer.js';
 import useAutoFocus from '../hooks/useAutoFocus.js';
 
 const MessageForm = ({ channelId }) => {
   const { t } = useTranslation();
-  const { sendMessage } = useSocket();
+  const { sendMessage } = useServer();
   const { userId } = useAuth();
   const messageInputRef = useAutoFocus();
 
@@ -31,12 +31,10 @@ const MessageForm = ({ channelId }) => {
     validationSchema,
     validateOnMount: true,
     onSubmit: async ({ body }) => {
-      console.log(formik);
       const message = {
         body,
         username: userId.username,
         channelId,
-        timestamp: Date.now(),
       };
       try {
         await sendMessage(message);

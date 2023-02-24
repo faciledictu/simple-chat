@@ -7,7 +7,7 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import Modal from 'react-bootstrap/Modal';
 
-import useSocket from '../../hooks/useSocket.js';
+import useServer from '../../hooks/useServer.js';
 import * as modalSlice from '../../slices/modalSlice.js';
 import ChannelName from '../ChannelName.jsx';
 
@@ -15,14 +15,13 @@ const Remove = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const submitRef = useRef();
-  const { removeChannel } = useSocket();
+  const { removeChannel } = useServer();
 
   const { channelId, channelName } = useSelector((state) => state.modal.context);
 
   const handleClose = () => dispatch(modalSlice.actions.close());
 
   const handleSubmit = async (e) => {
-    console.log(e);
     e.preventDefault();
     submitRef.current.disabled = true;
     try {

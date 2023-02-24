@@ -9,14 +9,14 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import Modal from 'react-bootstrap/Modal';
 
-import useSocket from '../../hooks/useSocket.js';
+import useServer from '../../hooks/useServer.js';
 import * as channelsSlice from '../../slices/channelsSlice.js';
 import * as modalSlice from '../../slices/modalSlice.js';
 
 const Add = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const { createChannel } = useSocket();
+  const { createChannel } = useServer();
 
   const handleClose = () => dispatch(modalSlice.actions.close());
 
@@ -45,7 +45,7 @@ const Add = () => {
       }
     },
   });
-  console.log(formik);
+
   const nameIsValid = !formik.errors.name && formik.values.name !== '';
   const nameIsInvalid = !!formik.errors.name && formik.values.name !== '';
 

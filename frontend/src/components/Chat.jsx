@@ -1,15 +1,12 @@
 import { useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
-import axios from 'axios';
 
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Spinner from 'react-bootstrap/Spinner';
 
-import routes from '../routes.js';
-import useAuth from '../hooks/useAuth.js';
-import useSocket from '../hooks/useSocket.js';
+import useServer from '../hooks/useServer.js';
 import * as channelsSlice from '../slices/channelsSlice.js';
 import * as messagesSlice from '../slices/messagesSlice.js';
 
@@ -17,35 +14,16 @@ import ChannelsSidebar from './ChannelsSidebar.jsx';
 import Modal from './modals/index.jsx';
 import MessagesFrame from './MessagesFrame.jsx';
 
-const getAuthHeader = (userId) => {
-  if (userId.token) {
-    return { Authorization: `Bearer ${userId.token}` };
-  }
-
-  return {};
-};
-
 const Chat = () => {
   const { t } = useTranslation();
-  const dispatch = useDispatch();
-  const { connect, disconnect } = useSocket();
-  const { userId } = useAuth();
+  const { connectSocket, fetchData, disconnectSocket } = useServer();
 
   useEffect(() => {
-    const fetchData = async () => {
-      const route = routes.data();
-      const headers = getAuthHeader(userId);
-      const { data } = await axios.get(route, { headers });
-      dispatch(channelsSlice.actions.addChannels(data.channels));
-      dispatch(messagesSlice.actions.addMessages(data.messages));
-      dispatch(channelsSlice.actions.setCurrentChannel(data.currentChannelId));
-    };
-
     fetchData();
-    connect();
+    connectSocket();
 
     return () => {
-      disconnect();
+      disconnectSocket();
     };
   }, []);
 

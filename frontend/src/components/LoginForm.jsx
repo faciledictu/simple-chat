@@ -1,4 +1,3 @@
-import axios from 'axios';
 import { useFormik } from 'formik';
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
@@ -16,7 +15,6 @@ import Image from 'react-bootstrap/Image';
 import Row from 'react-bootstrap/Row';
 
 import useAuth from '../hooks/useAuth.js';
-import routes from '../routes.js';
 
 const Login = () => {
   const { t } = useTranslation();
@@ -37,8 +35,7 @@ const Login = () => {
     validationSchema,
     onSubmit: async (values) => {
       try {
-        const { data } = await axios.post(routes.login(), values);
-        auth.logIn(data);
+        await auth.logIn(values);
         navigate('/');
       } catch (error) {
         formik.setSubmitting(false);
