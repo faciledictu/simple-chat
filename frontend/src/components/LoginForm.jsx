@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { useFormik } from 'formik';
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { object, string } from 'yup';
 
@@ -12,6 +12,7 @@ import Col from 'react-bootstrap/Col';
 import Container from 'react-bootstrap/Container';
 import FloatingLabel from 'react-bootstrap/FloatingLabel';
 import Form from 'react-bootstrap/Form';
+import Image from 'react-bootstrap/Image';
 import Row from 'react-bootstrap/Row';
 
 import useAuth from '../hooks/useAuth.js';
@@ -29,10 +30,8 @@ const Login = () => {
   const navigate = useNavigate();
 
   const validationSchema = object({
-    username: string()
-      .required(t('errors.required')),
-    password: string()
-      .required(t('errors.required')),
+    username: string().required(t('errors.required')),
+    password: string().required(t('errors.required')),
   });
 
   const formik = useFormik({
@@ -62,15 +61,14 @@ const Login = () => {
       <Row className="justify-content-center align-content-center h-100">
         <Col xs={12} md={8} xxl={6}>
           <Card>
-            <Card.Body as={Row} className="p-5">
-              <Form onSubmit={formik.handleSubmit}>
-                <h1 className="mb-4 h4">{t('login.header')}</h1>
+            <Card.Body className="row p-5">
+              <Col xs={12} md={6} className="d-flex align-items-center justify-content-center">
+                <Image src={`${process.env.PUBLIC_URL}/images/login.jpg`} roundedCircle alt={t('login.header')} />
+              </Col>
+              <Form onSubmit={formik.handleSubmit} className="col-12 col-12 col-md-6">
+                <h1 className="text-center mb-4 h3">{t('login.header')}</h1>
 
-                <FloatingLabel
-                  controlId="username"
-                  label={t('login.username')}
-                  className="mb-3"
-                >
+                <FloatingLabel controlId="username" label={t('login.username')} className="mb-3">
                   <Form.Control
                     type="text"
                     value={formik.values.username}
@@ -84,11 +82,7 @@ const Login = () => {
                   />
                 </FloatingLabel>
 
-                <FloatingLabel
-                  controlId="password"
-                  label={t('login.password')}
-                  className="mb-3"
-                >
+                <FloatingLabel controlId="password" label={t('login.password')} className="mb-3">
                   <Form.Control
                     type="password"
                     value={formik.values.password}
@@ -110,10 +104,17 @@ const Login = () => {
                   className="mb-3 w-100"
                   disabled={formik.isSubmitting}
                 >
-                  {t('login.login')}
+                  {t('login.signIn')}
                 </Button>
               </Form>
             </Card.Body>
+            <Card.Footer className="p-4">
+              <div className="text-muted text-center">
+                <span>{t('login.noAccount')}</span>
+                {' '}
+                <Link to="/signup">{t('login.createOne')}</Link>
+              </div>
+            </Card.Footer>
           </Card>
         </Col>
       </Row>

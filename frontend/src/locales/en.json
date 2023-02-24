@@ -6,14 +6,25 @@
     "errors": {
       "required": "Please fill out",
       "authFailed": "Wrong username or password",
-      "outOfLenght": "Channel name should be 3 to 20 characters",
-      "notUnique": "Channel name should be unique"
+      "outOfLenght": "Should be 3 to 20 characters",
+      "notUnique": "A channel with this name already exists",
+      "min6chars": "Minimum 6 characters",
+      "notSame": "Passwords should match"
     },
     "login": {
-      "header": "Login",
+      "header": "Sign in",
       "username": "Your nickname",
       "password": "Your password",
-      "login": "Log in"
+      "signIn": "Sign in",
+      "noAccount": "Don’t have an account?",
+      "createOne": "Create one"
+    },
+    "signUp": {
+      "header": "Create account",
+      "username": "User name",
+      "password": "Password",
+      "confirmPassword": "Confirm password",
+      "signUp": "Sign up"
     },
     "navbar": {
       "logOut": "Log out"

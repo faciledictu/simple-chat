@@ -7,13 +7,24 @@
       "required": "Необходимо заполнить",
       "authFailed": "Неверные имя пользователя или пароль",
       "outOfLenght": "От 3 до 20 символов",
-      "notUnique": "Channel name should be unique"
+      "notUnique": "Канал с таким именем уже есть",
+      "min6chars": "Не менее 6 символов",
+      "notSame": "Пароли должны совпадать"
     },
     "login": {
       "header": "Вход",
       "username": "Ваш ник",
       "password": "Пароль",
-      "login": "Войти"
+      "signIn": "Войти",
+      "noAccount": "Нет аккаунта?",
+      "createOne": "Зарегистрируйтесь"
+    },
+    "signUp": {
+      "header": "Регистрация",
+      "username": "Имя пользователя",
+      "password": "Пароль",
+      "confirmPassword": "Подтвердите пароль",
+      "signUp": "Зарегистрироваться"
     },
     "navbar": {
       "logOut": "Выйти"
