@@ -1,7 +1,7 @@
 {
   "translation": {
     "language": "Русский",
-    "appName": "Simple Chat",
+    "appName": "Hexlet Chat",
     "loading": "Загрузка...",
     "errors": {
       "noConnection": "Ошибка соединения",
@@ -11,7 +11,12 @@
       "outOfLenght": "От 3 до 20 символов",
       "notUnique": "Канал с таким именем уже есть",
       "min6chars": "Не менее 6 символов",
-      "notSame": "Пароли должны совпадать"
+      "notSame": "Пароли должны совпадать",
+      "notFound": {
+        "title": "Страница не найдена",
+        "description": "Здесь ничего нет",
+        "link": "Перейти в Hexlet Chat"
+      }
     },
     "login": {
       "header": "Вход",

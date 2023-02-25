@@ -2,7 +2,7 @@ import { useTranslation } from 'react-i18next';
 import Col from 'react-bootstrap/Col';
 
 import MessageForm from './MessageForm.jsx';
-import MessagesList from './MessagesList.jsx';
+import MessageList from './MessageList.jsx';
 import ChannelName from './ChannelName.jsx';
 
 const MessageFrameHeader = ({ channelName, messagesCount }) => {
@@ -20,12 +20,12 @@ const MessageFrameHeader = ({ channelName, messagesCount }) => {
   );
 };
 
-const MessagesFrame = ({ channel, messages }) => (
+const Messages = ({ channel, messages }) => (
   <Col className="p-0 d-flex flex-column h-100">
     <MessageFrameHeader channelName={channel.name} messagesCount={messages.length} />
-    <MessagesList channelId={channel.id} content={messages} />
+    <MessageList channelId={channel.id} content={messages} />
     <MessageForm channelId={channel.id} />
   </Col>
 );
 
-export default MessagesFrame;
+export default Messages;

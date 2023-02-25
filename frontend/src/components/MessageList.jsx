@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react';
 import LeoProfanity from 'leo-profanity';
 
+import useAuth from '../hooks/useAuth.js';
 import Message from './Message.jsx';
 
 const scrollToMarker = (marker, behavior = 'auto') => {
@@ -15,6 +16,7 @@ const Messages = ({ channelId, content }) => {
   filter.add(filter.getDictionary('en'));
   filter.add(filter.getDictionary('fr'));
   filter.add(filter.getDictionary('ru'));
+  const { userId } = useAuth();
 
   const scrollRef = useRef();
   useEffect(() => {
@@ -27,9 +29,23 @@ const Messages = ({ channelId, content }) => {
 
   return (
     <div id="messages-box" className="overflow-auto p-3 mb-auto">
-      {content.map(({ id, username, body }) => (
-        <Message key={id} author={username} body={filter.clean(body)} />
-      ))}
+      {content.map(({
+        id, username, body, timestamp,
+      }) => {
+        const time = timestamp
+          ? (new Date(timestamp)).toLocaleTimeString(undefined, { timeStyle: 'short' })
+          : '';
+        const messageVariant = userId.username === username ? 'currentUser' : 'other';
+        return (
+          <Message
+            key={id}
+            author={username}
+            time={time}
+            body={filter.clean(body)}
+            variant={messageVariant}
+          />
+        );
+      })}
       <div className="scroll-marker" ref={scrollRef} />
     </div>
   );

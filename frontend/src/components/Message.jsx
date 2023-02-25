@@ -1,6 +1,4 @@
-import useAuth from '../hooks/useAuth.js';
-
-const coloursMap = {
+const appearanceMap = {
   currentUser: {
     justify: 'end',
     bgColour: 'primary',
@@ -9,21 +7,27 @@ const coloursMap = {
   other: {
     justify: 'start',
     bgColour: 'light',
-    authorColour: 'secondary',
+    authorColour: 'dark',
   },
 };
 
-const Message = ({ author, body }) => {
-  const { userId } = useAuth();
-  const messageType = userId.username === author ? 'currentUser' : 'other';
-  const appearance = coloursMap[messageType];
+const Message = ({
+  author, body, variant, time,
+}) => {
+  const appearance = appearanceMap[variant];
 
   return (
     <div className={`d-flex mb-3 justify-content-${appearance.justify}`}>
       <div>
-        <div className={`px-3 text-${appearance.authorColour}`}>{author}</div>
-        <div className={`px-3 py-2 rounded-4 text-break text-bg-${appearance.bgColour}`}>
-          {body}
+        <div className={`small text-${appearance.authorColour} text-${appearance.justify}`}>
+          {author}
+          {' '}
+          <i style={{ opacity: '50%' }}>{time}</i>
+        </div>
+        <div className={`d-flex justify-content-${appearance.justify}`}>
+          <div className={`px-3 py-2 text-break text-bg-${appearance.bgColour} message-corners-${appearance.justify}`}>
+            {body}
+          </div>
         </div>
       </div>
     </div>

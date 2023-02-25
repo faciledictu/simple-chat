@@ -23,6 +23,7 @@ import SignUpForm from './SignUpForm.jsx';
 import NavBar from './NavBar.jsx';
 
 import 'react-toastify/dist/ReactToastify.css';
+import '../style.css';
 
 const AuthProvider = ({ children }) => {
   const userId = JSON.parse(localStorage.getItem('userId'));
@@ -151,9 +152,10 @@ const App = () => (
         <div className="d-flex flex-column h-100">
           <NavBar />
           <Routes>
-            <Route path="/" element={<ChatRoute />} errorElement={<ErrorPage />} />
+            <Route path="/" element={<ChatRoute />} />
             <Route path="login" element={<LoginForm />} />
             <Route path="signup" element={<SignUpForm />} />
+            <Route path="*" element={<ErrorPage />} />
           </Routes>
         </div>
         <ToastContainer

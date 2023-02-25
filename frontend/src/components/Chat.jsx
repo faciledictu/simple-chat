@@ -10,9 +10,9 @@ import useServer from '../hooks/useServer.js';
 import * as channelsSlice from '../slices/channelsSlice.js';
 import * as messagesSlice from '../slices/messagesSlice.js';
 
-import ChannelsSidebar from './ChannelsSidebar.jsx';
+import Channels from './Channels.jsx';
 import Modal from './modals/index.jsx';
-import MessagesFrame from './MessagesFrame.jsx';
+import Messages from './Messages.jsx';
 
 const Chat = () => {
   const { t } = useTranslation();
@@ -44,8 +44,8 @@ const Chat = () => {
     if (currentChannel && currentChannelMessages) {
       return (
         <>
-          <ChannelsSidebar channels={channels} currentChannelId={currentChannelId} />
-          <MessagesFrame channel={currentChannel} messages={currentChannelMessages} />
+          <Channels channels={channels} currentChannelId={currentChannelId} />
+          <Messages channel={currentChannel} messages={currentChannelMessages} />
         </>
       );
     }

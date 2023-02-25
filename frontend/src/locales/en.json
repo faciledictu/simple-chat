@@ -1,7 +1,7 @@
 {
   "translation": {
     "language": "English",
-    "appName": "Simple Chat",
+    "appName": "Hexlet Chat",
     "loading": "Loading...",
     "errors": {
       "noConnection": "Connection error",
@@ -11,7 +11,12 @@
       "outOfLenght": "Should be 3 to 20 characters",
       "notUnique": "A channel with this name already exists",
       "min6chars": "Should be at least 6 characters",
-      "notSame": "Passwords should match"
+      "notSame": "Passwords should match",
+      "notFound": {
+        "title": "Page not found",
+        "description": "There's nothing here",
+        "link": "Go to Hexlet Chat"
+      }
     },
     "login": {
       "header": "Sign in",
