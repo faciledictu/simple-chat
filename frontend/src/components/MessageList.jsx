@@ -35,14 +35,16 @@ const Messages = ({ channelId, content }) => {
         const time = timestamp
           ? (new Date(timestamp)).toLocaleTimeString(undefined, { timeStyle: 'short' })
           : '';
-        const messageVariant = userId.username === username ? 'currentUser' : 'other';
+        const variant = userId.username === username ? 'primary' : 'light';
+        const justify = userId.username === username ? 'end' : 'start';
         return (
           <Message
             key={id}
             author={username}
             time={time}
             body={filter.clean(body)}
-            variant={messageVariant}
+            variant={variant}
+            justify={justify}
           />
         );
       })}

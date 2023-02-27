@@ -1,31 +1,18 @@
-const appearanceMap = {
-  currentUser: {
-    justify: 'end',
-    bgColour: 'primary',
-    authorColour: 'primary',
-  },
-  other: {
-    justify: 'start',
-    bgColour: 'light',
-    authorColour: 'dark',
-  },
-};
-
 const Message = ({
-  author, body, variant, time,
+  author, body, time, variant = 'primary', justify = 'start',
 }) => {
-  const appearance = appearanceMap[variant];
+  const authorColor = variant === 'light' ? 'dark' : variant;
 
   return (
-    <div className={`d-flex mb-3 justify-content-${appearance.justify}`}>
+    <div className={`d-flex mb-3 justify-content-${justify}`}>
       <div>
-        <div className={`small text-${appearance.authorColour} text-${appearance.justify}`}>
+        <div className={`small text-${authorColor} text-${justify}`}>
           {author}
           {' '}
           <i style={{ opacity: '50%' }}>{time}</i>
         </div>
-        <div className={`d-flex justify-content-${appearance.justify}`}>
-          <div className={`px-3 py-2 text-break text-bg-${appearance.bgColour} message-corners-${appearance.justify}`}>
+        <div className={`d-flex justify-content-${justify}`}>
+          <div className={`px-3 py-2 text-break text-bg-${variant} message-corners-${justify}`}>
             {body}
           </div>
         </div>
