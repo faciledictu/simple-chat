@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { object, string } from 'yup';
+import { toast } from 'react-toastify';
 
 import Alert from 'react-bootstrap/Alert';
 import Button from 'react-bootstrap/Button';
@@ -43,7 +44,8 @@ const Login = () => {
           setAuthFailed(true);
           return;
         }
-        throw error;
+        toast.error(t('errors.noConnection'));
+        console.log(error);
       }
     },
   });
