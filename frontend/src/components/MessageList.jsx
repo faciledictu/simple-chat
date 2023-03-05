@@ -2,7 +2,13 @@ import { useEffect, useRef } from 'react';
 import LeoProfanity from 'leo-profanity';
 
 import useAuth from '../hooks/useAuth.js';
-import Message from './Message.jsx';
+
+const MESSAGE_TYPE = 'simple';
+
+const profanityFilter = LeoProfanity;
+profanityFilter.add(profanityFilter.getDictionary('en'));
+profanityFilter.add(profanityFilter.getDictionary('fr'));
+profanityFilter.add(profanityFilter.getDictionary('ru'));
 
 const scrollToMarker = (marker, behavior = 'auto') => {
   marker.scrollIntoView({
@@ -11,11 +17,51 @@ const scrollToMarker = (marker, behavior = 'auto') => {
   });
 };
 
+const SimpleMessage = ({
+  author, body, color = 'light', justify = 'start',
+}) => (
+  <div className={`d-flex mb-3 justify-content-${justify}`}>
+    <div className={`px-3 py-2 text-break text-bg-${color} message-corners-${justify}`}>
+      <div className={`small text-${justify}`}>
+        {author}
+        <span className="visually-hidden">: </span>
+      </div>
+      {body}
+    </div>
+  </div>
+);
+
+const ExtendedMessage = ({
+  author, body, time, color = 'primary', justify = 'start',
+}) => {
+  const authorColor = color === 'light' ? 'dark' : color;
+
+  return (
+    <div className={`d-flex mb-3 justify-content-${justify}`}>
+      <div>
+        <div className={`small text-${authorColor} text-${justify}`}>
+          {author}
+          {' '}
+          <i style={{ opacity: '50%' }}>{time}</i>
+        </div>
+        <div className={`d-flex justify-content-${justify}`}>
+          <div className={`px-3 py-2 text-break text-bg-${color} message-corners-${justify}`}>
+            {body}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const messageMap = {
+  simple: SimpleMessage,
+  extended: ExtendedMessage,
+};
+
+const Message = messageMap[MESSAGE_TYPE];
+
 const Messages = ({ channelId, content }) => {
-  const filter = LeoProfanity;
-  filter.add(filter.getDictionary('en'));
-  filter.add(filter.getDictionary('fr'));
-  filter.add(filter.getDictionary('ru'));
   const { userId } = useAuth();
 
   const scrollRef = useRef();
@@ -32,18 +78,16 @@ const Messages = ({ channelId, content }) => {
       {content.map(({
         id, username, body, timestamp,
       }) => {
-        const time = timestamp
-          ? (new Date(timestamp)).toLocaleTimeString(undefined, { timeStyle: 'short' })
-          : '';
-        const variant = userId.username === username ? 'primary' : 'light';
+        const time = (new Date(timestamp)).toLocaleTimeString(undefined, { timeStyle: 'short' });
+        const color = userId.username === username ? 'primary' : 'light';
         const justify = userId.username === username ? 'end' : 'start';
         return (
           <Message
             key={id}
             author={username}
             time={time}
-            body={filter.clean(body)}
-            variant={variant}
+            body={profanityFilter.clean(body)}
+            color={color}
             justify={justify}
           />
         );
