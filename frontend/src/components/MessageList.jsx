@@ -13,7 +13,7 @@ profanityFilter.add(profanityFilter.getDictionary('ru'));
 const scrollToMarker = (marker, behavior = 'auto') => {
   marker.scrollIntoView({
     behavior,
-    block: 'start',
+    block: 'end',
   });
 };
 
