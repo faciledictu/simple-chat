@@ -3,7 +3,7 @@ import LeoProfanity from 'leo-profanity';
 
 import useAuth from '../hooks/useAuth.js';
 
-const MESSAGE_TYPE = 'simple';
+const MESSAGE_TYPE = 'bubble';
 
 const profanityFilter = LeoProfanity;
 profanityFilter.add(profanityFilter.getDictionary('en'));
@@ -13,25 +13,38 @@ profanityFilter.add(profanityFilter.getDictionary('ru'));
 const scrollToMarker = (marker, behavior = 'auto') => {
   marker.scrollIntoView({
     behavior,
-    block: 'end',
+    block: 'start',
   });
 };
 
 const SimpleMessage = ({
-  author, body, color = 'light', justify = 'start',
+  author, body,
+}) => (
+  <div className="text-break mb-2">
+    <b>{author}</b>
+    {': '}
+    {body}
+  </div>
+);
+
+const BubbledMessage = ({
+  author, body,
+  color = 'light', justify = 'start',
 }) => (
   <div className={`d-flex mb-3 justify-content-${justify}`}>
-    <div className={`px-3 py-2 text-break text-bg-${color} message-corners-${justify}`}>
-      <div className={`small text-${justify}`}>
-        {author}
-        <span className="visually-hidden">: </span>
+    <div>
+      <div className={`px-3 py-2 text-break text-bg-${color} message-corners-${justify}`}>
+        <div className="small position-relative">
+          <b>{author}</b>
+          <div className="visually-hidden">: </div>
+        </div>
+        {body}
       </div>
-      {body}
     </div>
   </div>
 );
 
-const ExtendedMessage = ({
+const EnhancedMessage = ({
   author, body, time, color = 'primary', justify = 'start',
 }) => {
   const authorColor = color === 'light' ? 'dark' : color;
@@ -56,7 +69,8 @@ const ExtendedMessage = ({
 
 const messageMap = {
   simple: SimpleMessage,
-  extended: ExtendedMessage,
+  bubble: BubbledMessage,
+  withTime: EnhancedMessage,
 };
 
 const Message = messageMap[MESSAGE_TYPE];
@@ -74,7 +88,7 @@ const Messages = ({ channelId, content }) => {
   }, [content.length]);
 
   return (
-    <div id="messages-box" className="overflow-auto p-3 mb-auto">
+    <div id="messages-box" className="overflow-auto px-3 ps-3 mb-auto">
       {content.map(({
         id, username, body, timestamp,
       }) => {

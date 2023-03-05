@@ -73,7 +73,7 @@ const Channels = ({ channels, currentChannelId }) => {
   };
 
   return (
-    <Col xs={4} md={3} className="border-end pt-5 bg-light  overflow-auto">
+    <Col xs={4} md={3} className="border-end pt-5 bg-light d-flex flex-column">
       <div className="mb-2 d-flex justify-content-between align-items-center">
         <div className="text-truncate"><b>{t('chat.channels')}</b></div>
         <Button variant="outline-primary" className="rounded-circle p-0 d-flex align-items-center" onClick={handleAdd}>
@@ -91,7 +91,7 @@ const Channels = ({ channels, currentChannelId }) => {
           <span className="visually-hidden">+</span>
         </Button>
       </div>
-      <ul id="channels-box" className="flex-column nav nav-pills nav-fill">
+      <ul id="channels-box" className="nav nav-pills nav-fill overflow-auto">
         {channels.map(({ id, name, removable }) => {
           const isActive = id === currentChannelId;
           const variant = isActive ? 'outline-primary' : null;
