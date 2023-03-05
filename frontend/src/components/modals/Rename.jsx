@@ -1,6 +1,7 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { useFormik } from 'formik';
 import { useTranslation } from 'react-i18next';
+import { useRollbar } from '@rollbar/react';
 import { toast } from 'react-toastify';
 
 import { object, string } from 'yup';
@@ -14,6 +15,7 @@ import * as channelsSlice from '../../slices/channelsSlice.js';
 import * as modalSlice from '../../slices/modalSlice.js';
 
 const Rename = () => {
+  const rollbar = useRollbar();
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const { renameChannel } = useServer();
@@ -45,7 +47,7 @@ const Rename = () => {
         toast.success(t('modals.renameSuccess'));
         handleClose();
       } catch (error) {
-        console.log(error);
+        rollbar.error('Rename', error);
         toast.error(t('errors.noConnection'));
       }
     },

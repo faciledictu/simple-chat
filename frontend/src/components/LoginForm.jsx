@@ -2,6 +2,7 @@ import { useFormik } from 'formik';
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { useRollbar } from '@rollbar/react';
 import { object, string } from 'yup';
 import { toast } from 'react-toastify';
 
@@ -18,6 +19,7 @@ import Row from 'react-bootstrap/Row';
 import useAuth from '../hooks/useAuth.js';
 
 const Login = () => {
+  const rollbar = useRollbar();
   const { t } = useTranslation();
   const [authFailed, setAuthFailed] = useState(false);
   const auth = useAuth();
@@ -45,7 +47,7 @@ const Login = () => {
           return;
         }
         toast.error(t('errors.noConnection'));
-        console.log(error);
+        rollbar.error('LogIn', error);
       }
     },
   });

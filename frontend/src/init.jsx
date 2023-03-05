@@ -2,6 +2,8 @@ import { useMemo, useState } from 'react';
 import { useDispatch, Provider } from 'react-redux';
 import i18next from 'i18next';
 import { I18nextProvider, initReactI18next } from 'react-i18next';
+import Rollbar from 'rollbar';
+import { Provider as RollbarProvider, ErrorBoundary } from '@rollbar/react';
 import axios from 'axios';
 import { io } from 'socket.io-client';
 
@@ -51,7 +53,7 @@ const AuthProvider = ({ children }) => {
 };
 
 const ServerProvider = ({ children }) => {
-  const TIMEOUT = 5000;
+  const TIMEOUT = 4000;
 
   const getAuthHeader = (userId) => {
     if (userId.token) {
@@ -132,6 +134,11 @@ const ServerProvider = ({ children }) => {
 };
 
 const init = async () => {
+  const rollbar = new Rollbar({
+    accessToken: 'c3ffc3965ed246f392ac08ff37c8bd46',
+    environment: process.env.NODE_ENV,
+  });
+
   const i18n = i18next.createInstance();
 
   await i18n
@@ -143,15 +150,19 @@ const init = async () => {
     });
 
   return (
-    <I18nextProvider i18n={i18n}>
-      <Provider store={store}>
-        <AuthProvider>
-          <ServerProvider>
-            <App />
-          </ServerProvider>
-        </AuthProvider>
-      </Provider>
-    </I18nextProvider>
+    <RollbarProvider instance={rollbar}>
+      <ErrorBoundary>
+        <I18nextProvider i18n={i18n}>
+          <Provider store={store}>
+            <AuthProvider>
+              <ServerProvider>
+                <App />
+              </ServerProvider>
+            </AuthProvider>
+          </Provider>
+        </I18nextProvider>
+      </ErrorBoundary>
+    </RollbarProvider>
   );
 };
 

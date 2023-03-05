@@ -1,6 +1,7 @@
 // import { useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useFormik } from 'formik';
+import { useRollbar } from '@rollbar/react';
 import { object, string } from 'yup';
 import { toast } from 'react-toastify';
 
@@ -13,6 +14,7 @@ import useServer from '../hooks/useServer.js';
 import useAutoFocus from '../hooks/useAutoFocus.js';
 
 const MessageForm = ({ channelId }) => {
+  const rollbar = useRollbar();
   const { t } = useTranslation();
   const { sendMessage } = useServer();
   const { userId } = useAuth();
@@ -40,8 +42,8 @@ const MessageForm = ({ channelId }) => {
         await sendMessage(message);
         formik.resetForm();
       } catch (error) {
-        console.log(error);
         toast.error(t('errors.noConnection'));
+        rollbar.error('MessageForm#sending', error);
       } finally {
         messageInputRef.current.focus();
       }

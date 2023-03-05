@@ -1,6 +1,7 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { useFormik } from 'formik';
 import { useTranslation } from 'react-i18next';
+import { useRollbar } from '@rollbar/react';
 import { toast } from 'react-toastify';
 
 import { object, string } from 'yup';
@@ -14,6 +15,7 @@ import * as channelsSlice from '../../slices/channelsSlice.js';
 import * as modalSlice from '../../slices/modalSlice.js';
 
 const Add = () => {
+  const rollbar = useRollbar();
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const { createChannel } = useServer();
@@ -40,7 +42,7 @@ const Add = () => {
         handleClose();
         toast.success(t('modals.addSuccess'));
       } catch (error) {
-        console.log(error);
+        rollbar.error('Add', error);
         toast.error(t('errors.noConnection'));
       }
     },
