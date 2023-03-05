@@ -88,7 +88,7 @@ const Messages = ({ channelId, content }) => {
   }, [content.length]);
 
   return (
-    <div id="messages-box" className="overflow-auto px-3 ps-3 mb-auto">
+    <div id="messages-box" className="overflow-auto px-3 pt-3 mb-auto">
       {content.map(({
         id, username, body, timestamp,
       }) => {
