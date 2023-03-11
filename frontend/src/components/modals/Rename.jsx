@@ -33,6 +33,7 @@ const Rename = () => {
   const validationSchema = object({
     name: string()
       .trim()
+      .required('errors.required')
       .notOneOf(existingChannelNames, 'errors.notUnique')
       .min(3, 'errors.outOfLenght')
       .max(20, 'errors.outOfLenght'),
@@ -51,10 +52,11 @@ const Rename = () => {
         toast.error(t('errors.noConnection'));
       }
     },
+    validateOnChange: false,
+    validateOnBlur: false,
   });
 
-  const nameIsValid = !formik.errors.name && formik.values.name !== '';
-  const nameIsInvalid = !!formik.errors.name && formik.values.name !== '';
+  const nameIsInvalid = formik.errors.name && formik.values.name !== '';
 
   return (
     <Modal show onHide={handleClose}>
@@ -64,18 +66,18 @@ const Rename = () => {
 
       <Modal.Body>
         <Form onSubmit={formik.handleSubmit}>
-          <Form.Group className="mb-3 position-relative" controlId="name">
-            <Form.Control isValid={nameIsValid} isInvalid={nameIsInvalid} type="text" value={formik.values.name} onChange={formik.handleChange} ref={inputRef} disabled={formik.isSubmitting} />
+          <Form.Group className="mb-3" controlId="name">
+            <Form.Control isInvalid={nameIsInvalid} type="text" value={formik.values.name} onChange={formik.handleChange} ref={inputRef} disabled={formik.isSubmitting} />
             <Form.Label className="visually-hidden">
               {t('modals.name')}
             </Form.Label>
-            <Form.Control.Feedback type="invalid" tooltip>{t(formik.errors.name)}</Form.Control.Feedback>
+            <Form.Control.Feedback type="invalid">{t(formik.errors.name)}</Form.Control.Feedback>
           </Form.Group>
           <Form.Group className="d-flex gap-2 col-12 justify-content-end">
             <Button variant="outline-primary" onClick={handleClose} className="col-3">
               {t('modals.cancel')}
             </Button>
-            <Button variant="primary" type="submit" className="col-3" disabled={formik.isSubmitting || !nameIsValid}>
+            <Button variant="primary" type="submit" className="col-3" disabled={formik.isSubmitting}>
               {t('modals.send')}
             </Button>
           </Form.Group>

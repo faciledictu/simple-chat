@@ -5,7 +5,6 @@ import { useRollbar } from '@rollbar/react';
 import { toast } from 'react-toastify';
 
 import { object, string } from 'yup';
-import Alert from 'react-bootstrap/Alert';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import Modal from 'react-bootstrap/Modal';
@@ -28,6 +27,7 @@ const Add = () => {
   const validationSchema = object({
     name: string()
       .trim()
+      .required('errors.required')
       .notOneOf(existingChannelNames, 'errors.notUnique')
       .min(3, 'errors.outOfLenght')
       .max(20, 'errors.outOfLenght'),
@@ -46,10 +46,11 @@ const Add = () => {
         toast.error(t('errors.noConnection'));
       }
     },
+    validateOnChange: false,
+    validateOnBlur: false,
   });
 
-  const nameIsValid = !formik.errors.name && formik.values.name !== '';
-  const nameIsInvalid = !!formik.errors.name && formik.values.name !== '';
+  const nameIsInvalid = formik.errors.name && formik.touched.name;
 
   return (
     <Modal show onHide={handleClose}>
@@ -59,19 +60,18 @@ const Add = () => {
 
       <Modal.Body>
         <Form onSubmit={formik.handleSubmit}>
-          <Form.Group className="mb-3 position-relative" controlId="name">
-            <Form.Control autoFocus isValid={nameIsValid} isInvalid={nameIsInvalid} type="text" value={formik.values.name} onChange={formik.handleChange} onBlur={formik.handleBlur} disabled={formik.isSubmitting} />
+          <Form.Group className="mb-3" controlId="name">
+            <Form.Control autoFocus isInvalid={nameIsInvalid} type="text" value={formik.values.name} onChange={formik.handleChange} onBlur={formik.handleBlur} disabled={formik.isSubmitting} />
             <Form.Label className="visually-hidden">
               {t('modals.name')}
             </Form.Label>
-            <Form.Control.Feedback type="invalid" tooltip>{t(formik.errors.name)}</Form.Control.Feedback>
+            <Form.Control.Feedback type="invalid">{t(formik.errors.name)}</Form.Control.Feedback>
           </Form.Group>
-          {formik.status === 'noConnection' ? <Alert variant="danger">{t('errors.noConnection')}</Alert> : null }
           <Form.Group className="d-flex gap-2 col-12 justify-content-end">
             <Button variant="outline-primary" onClick={handleClose} className="col-3">
               {t('modals.cancel')}
             </Button>
-            <Button variant="primary" type="submit" className="col-3" disabled={formik.isSubmitting || !nameIsValid}>
+            <Button variant="primary" type="submit" className="col-3" disabled={formik.isSubmitting}>
               {t('modals.send')}
             </Button>
           </Form.Group>
