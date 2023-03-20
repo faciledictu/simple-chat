@@ -24,7 +24,7 @@
       "password": "Пароль",
       "signIn": "Войти",
       "noAccount": "Нет аккаунта?",
-      "createOne": "Зарегистрируйтесь"
+      "createOne": "Регистрация"
     },
     "signUp": {
       "header": "Регистрация",
