@@ -123,7 +123,7 @@ const Login = () => {
                   type="submit"
                   size="lg"
                   className="mb-3 w-100"
-                  disabled={formik.isSubmitting || !formik.isValid}
+                  disabled={formik.isSubmitting}
                 >
                   {t('login.signIn')}
                 </Button>
