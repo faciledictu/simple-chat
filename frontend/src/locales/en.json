@@ -38,6 +38,7 @@
     },
     "chat": {
       "channels": "Channels",
+      "channelActions": "Channel actions",
       "rename": "Rename",
       "remove": "Delete",
       "newMessage": "New message",

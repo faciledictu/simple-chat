@@ -34,7 +34,9 @@ const RemovableChannel = ({
         <ChannelName name={name} />
       </Button>
 
-      <Dropdown.Toggle active={isActive} split variant={variant} className="border-0" />
+      <Dropdown.Toggle active={isActive} split variant={variant} className="border-0">
+        <span className="visually-hidden">{t('chat.channelActions')}</span>
+      </Dropdown.Toggle>
       <Dropdown.Menu>
         <Dropdown.Item onClick={handleRename}>{t('chat.rename')}</Dropdown.Item>
         <Dropdown.Item onClick={handleRemove}>{t('chat.remove')}</Dropdown.Item>

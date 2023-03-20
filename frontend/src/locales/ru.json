@@ -38,6 +38,7 @@
     },
     "chat": {
       "channels": "Каналы",
+      "channelActions": "Управление каналом",
       "rename": "Переименовать",
       "remove": "Удалить",
       "newMessage": "Новое сообщение",
