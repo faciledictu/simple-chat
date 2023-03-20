@@ -63,7 +63,7 @@ const Add = () => {
           <Form.Group className="mb-3" controlId="name">
             <Form.Control autoFocus isInvalid={nameIsInvalid} type="text" value={formik.values.name} onChange={formik.handleChange} onBlur={formik.handleBlur} disabled={formik.isSubmitting} />
             <Form.Label className="visually-hidden">
-              {t('modals.name')}
+              {t('modals.channelName')}
             </Form.Label>
             <Form.Control.Feedback type="invalid">{t(formik.errors.name)}</Form.Control.Feedback>
           </Form.Group>

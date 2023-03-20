@@ -69,7 +69,7 @@ const Rename = () => {
           <Form.Group className="mb-3" controlId="name">
             <Form.Control isInvalid={nameIsInvalid} type="text" value={formik.values.name} onChange={formik.handleChange} ref={inputRef} disabled={formik.isSubmitting} />
             <Form.Label className="visually-hidden">
-              {t('modals.name')}
+              {t('modals.channelName')}
             </Form.Label>
             <Form.Control.Feedback type="invalid">{t(formik.errors.name)}</Form.Control.Feedback>
           </Form.Group>
