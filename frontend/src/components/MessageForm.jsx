@@ -62,7 +62,7 @@ const MessageForm = ({ channelId }) => {
           onChange={formik.handleChange}
           aria-label={t('chat.newMessage')}
           className="ps-3 pe-5 rounded-pill w-100"
-          autoFocus
+          autoComplete="off"
           ref={messageInputRef}
         />
         <Button
