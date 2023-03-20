@@ -18,6 +18,8 @@ import App from './components/App.jsx';
 import resources from './locales/index.js';
 import store from './slices/index.js';
 
+const DEFAULT_LANGUAGE = 'ru';
+
 const AuthProvider = ({ children }) => {
   const userId = JSON.parse(localStorage.getItem('userId'));
 
@@ -145,7 +147,7 @@ const init = async () => {
     .use(initReactI18next)
     .init({
       resources,
-      lng: 'en',
+      lng: DEFAULT_LANGUAGE,
       fallbackLng: ['en', 'ru'],
     });
 
