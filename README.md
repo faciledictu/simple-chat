@@ -11,18 +11,32 @@ Demo: [faciledictu-frontend-project-12.up.railway.app](http://faciledictu-fronte
 ## Installation
 
 ```bash
-make install
+make ci
 ```
 
-## Running the app
+## Running the app locally
 
 ```bash
 make start
 ```
 
-http://localhost:3000
+The app will be available on _localhost:3000_
 
-## Build with
+## Deploy
+
+Build the app
+
+```bash
+npm run build
+```
+
+Run builded app
+
+```bash
+npm start
+```
+
+## Built with
 
 [![React][React-badge]][React-url]
 [![Bootstrap][Bootstrap-badge]][Bootstrap-url]
@@ -38,5 +52,5 @@ http://localhost:3000
 [i18next-badge]: https://img.shields.io/badge/i18next-26A69A?style=flat&logo=i18next&logoColor=white
 [i18next-url]: https://www.i18next.com
 
-[Axios-badge]: https://img.shields.io/badge/Axios-5A29E4?style=flat&logo=i18next&logoColor=white
+[Axios-badge]: https://img.shields.io/badge/Axios-5A29E4?style=flat&logo=axios&logoColor=white
 [Axios-url]: https://axios-http.com
