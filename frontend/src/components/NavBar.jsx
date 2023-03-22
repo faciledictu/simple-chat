@@ -30,13 +30,13 @@ const LanguageSelector = () => {
 const AuthButton = () => {
   const { t } = useTranslation();
 
-  const auth = useAuth();
+  const { loggedIn, getUserName, logOut } = useAuth();
 
-  if (auth.loggedIn) {
+  if (loggedIn) {
     return (
       <>
-        <Navbar.Text className="ms-auto">{auth.userId.username}</Navbar.Text>
-        <Button variant="outline-secondary" size="sm" onClick={auth.logOut}>
+        <Navbar.Text className="ms-auto">{getUserName()}</Navbar.Text>
+        <Button variant="outline-secondary" size="sm" onClick={logOut}>
           {t('navbar.logOut')}
         </Button>
       </>

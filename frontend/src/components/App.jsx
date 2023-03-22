@@ -13,8 +13,8 @@ import 'react-toastify/dist/ReactToastify.css';
 import '../style.css';
 
 const ChatRoute = () => {
-  const auth = useAuth();
-  return auth.loggedIn ? <Chat /> : <LoginForm />;
+  const { loggedIn } = useAuth();
+  return loggedIn ? <Chat /> : <LoginForm />;
 };
 
 const App = () => (

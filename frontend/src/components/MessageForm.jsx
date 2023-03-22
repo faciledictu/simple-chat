@@ -17,7 +17,7 @@ const MessageForm = ({ channelId }) => {
   const rollbar = useRollbar();
   const { t } = useTranslation();
   const { sendMessage } = useServer();
-  const { userId } = useAuth();
+  const { getUserName } = useAuth();
   const messageInputRef = useAutoFocus();
 
   const validationSchema = object({
@@ -35,7 +35,7 @@ const MessageForm = ({ channelId }) => {
     onSubmit: async ({ body }) => {
       const message = {
         body,
-        username: userId.username,
+        username: getUserName(),
         channelId,
       };
       try {
