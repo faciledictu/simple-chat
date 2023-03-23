@@ -27,8 +27,6 @@ const Chat = () => {
     };
   }, []);
 
-  const modalType = useSelector((state) => state.modal.type);
-
   const channels = useSelector(channelsSlice.selectors.selectAll);
 
   const currentChannelId = useSelector((state) => state.channels.currentChannelId);
@@ -66,7 +64,7 @@ const Chat = () => {
           {renderContent()}
         </Row>
       </Container>
-      <Modal type={modalType} />
+      <Modal />
     </>
   );
 };

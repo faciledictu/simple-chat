@@ -1,5 +1,5 @@
 import { useRef } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { useRollbar } from '@rollbar/react';
 import { toast } from 'react-toastify';
@@ -9,19 +9,15 @@ import Form from 'react-bootstrap/Form';
 import Modal from 'react-bootstrap/Modal';
 
 import useServer from '../../hooks/useServer.js';
-import * as modalSlice from '../../slices/modalSlice.js';
 import ChannelName from '../ChannelName.jsx';
 
-const Remove = () => {
+const Remove = ({ handleClose }) => {
   const rollbar = useRollbar();
   const { t } = useTranslation();
-  const dispatch = useDispatch();
   const submitRef = useRef();
   const { removeChannel } = useServer();
 
   const { channelId, channelName } = useSelector((state) => state.modal.context);
-
-  const handleClose = () => dispatch(modalSlice.actions.close());
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -38,7 +34,7 @@ const Remove = () => {
   };
 
   return (
-    <Modal show onHide={handleClose}>
+    <>
       <Modal.Header closeButton>
         <Modal.Title>{t('modals.removeTitle')}</Modal.Title>
       </Modal.Header>
@@ -59,7 +55,7 @@ const Remove = () => {
           </Form.Group>
         </Form>
       </Modal.Body>
-    </Modal>
+    </>
   );
 };
 export default Remove;

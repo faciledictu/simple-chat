@@ -1,4 +1,4 @@
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { useFormik } from 'formik';
 import { useTranslation } from 'react-i18next';
 import { useRollbar } from '@rollbar/react';
@@ -11,15 +11,11 @@ import Modal from 'react-bootstrap/Modal';
 
 import useServer from '../../hooks/useServer.js';
 import * as channelsSlice from '../../slices/channelsSlice.js';
-import * as modalSlice from '../../slices/modalSlice.js';
 
-const Add = () => {
+const Add = ({ handleClose }) => {
   const rollbar = useRollbar();
   const { t } = useTranslation();
-  const dispatch = useDispatch();
   const { createChannel } = useServer();
-
-  const handleClose = () => dispatch(modalSlice.actions.close());
 
   const existingChannelNames = useSelector(channelsSlice.selectors.selectAll)
     .map(({ name }) => name);
@@ -53,7 +49,7 @@ const Add = () => {
   const nameIsInvalid = formik.errors.name && formik.touched.name;
 
   return (
-    <Modal show onHide={handleClose}>
+    <>
       <Modal.Header closeButton>
         <Modal.Title>{t('modals.addTitle')}</Modal.Title>
       </Modal.Header>
@@ -77,7 +73,7 @@ const Add = () => {
           </Form.Group>
         </Form>
       </Modal.Body>
-    </Modal>
+    </>
   );
 };
 

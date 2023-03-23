@@ -1,4 +1,4 @@
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { useFormik } from 'formik';
 import { useTranslation } from 'react-i18next';
 import { useRollbar } from '@rollbar/react';
@@ -12,19 +12,15 @@ import Modal from 'react-bootstrap/Modal';
 import useServer from '../../hooks/useServer.js';
 import useAutoFocus from '../../hooks/useAutoFocus';
 import * as channelsSlice from '../../slices/channelsSlice.js';
-import * as modalSlice from '../../slices/modalSlice.js';
 
-const Rename = () => {
+const Rename = ({ handleClose }) => {
   const rollbar = useRollbar();
   const { t } = useTranslation();
-  const dispatch = useDispatch();
   const { renameChannel } = useServer();
 
   const inputRef = useAutoFocus();
 
   const { channelId, channelName } = useSelector((state) => state.modal.context);
-
-  const handleClose = () => dispatch(modalSlice.actions.close());
 
   const existingChannelNames = useSelector(channelsSlice.selectors.selectAll)
     .map(({ name }) => name)
