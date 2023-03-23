@@ -4,6 +4,7 @@ import { I18nextProvider, initReactI18next } from 'react-i18next';
 import Rollbar from 'rollbar';
 import { Provider as RollbarProvider, ErrorBoundary } from '@rollbar/react';
 import { io } from 'socket.io-client';
+import LeoProfanity from 'leo-profanity';
 
 import AuthProvider from './providers/AuthProvider.jsx';
 import ServerProvider from './providers/ServerProvider.jsx';
@@ -30,6 +31,11 @@ const init = async () => {
     });
 
   const socket = io('/', { autoConnect: false });
+
+  const profanityFilter = LeoProfanity;
+  profanityFilter.add(profanityFilter.getDictionary('en'));
+  profanityFilter.add(profanityFilter.getDictionary('fr'));
+  profanityFilter.add(profanityFilter.getDictionary('ru'));
 
   return (
     <RollbarProvider instance={rollbar}>

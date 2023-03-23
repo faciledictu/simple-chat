@@ -5,11 +5,6 @@ import useAuth from '../hooks/useAuth.js';
 
 const MESSAGE_TYPE = 'bubble';
 
-const profanityFilter = LeoProfanity;
-profanityFilter.add(profanityFilter.getDictionary('en'));
-profanityFilter.add(profanityFilter.getDictionary('fr'));
-profanityFilter.add(profanityFilter.getDictionary('ru'));
-
 const scrollToMarker = (marker, behavior = 'auto') => {
   marker.scrollIntoView({
     behavior,
@@ -76,7 +71,10 @@ const messageMap = {
 const Message = messageMap[MESSAGE_TYPE];
 
 const Messages = ({ channelId, content }) => {
-  const { userId } = useAuth();
+  const { getUserName } = useAuth();
+  const currentUserName = getUserName();
+
+  const profanityFilter = LeoProfanity;
 
   const scrollRef = useRef();
   useEffect(() => {
@@ -93,8 +91,8 @@ const Messages = ({ channelId, content }) => {
         id, username, body, timestamp,
       }) => {
         const time = (new Date(timestamp)).toLocaleTimeString(undefined, { timeStyle: 'short' });
-        const color = userId.username === username ? 'primary' : 'light';
-        const justify = userId.username === username ? 'end' : 'start';
+        const color = currentUserName === username ? 'primary' : 'light';
+        const justify = currentUserName === username ? 'end' : 'start';
         return (
           <Message
             key={id}
