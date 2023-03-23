@@ -1,4 +1,6 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import {
+  BrowserRouter, Routes, Route, Navigate,
+} from 'react-router-dom';
 import { ToastContainer, Slide } from 'react-toastify';
 
 import useAuth from '../hooks/useAuth.js';
@@ -14,7 +16,17 @@ import '../style.css';
 
 const ChatRoute = () => {
   const { loggedIn } = useAuth();
-  return loggedIn ? <Chat /> : <LoginForm />;
+  return loggedIn ? <Chat /> : <Navigate to="login" />;
+};
+
+const LoginRoute = () => {
+  const { loggedIn } = useAuth();
+  return loggedIn ? <Navigate to="/" /> : <LoginForm />;
+};
+
+const SignUpRoute = () => {
+  const { loggedIn } = useAuth();
+  return loggedIn ? <Navigate to="/" /> : <SignUpForm />;
 };
 
 const App = () => (
@@ -23,8 +35,8 @@ const App = () => (
       <NavBar />
       <Routes>
         <Route path="/" element={<ChatRoute />} />
-        <Route path="login" element={<LoginForm />} />
-        <Route path="signup" element={<SignUpForm />} />
+        <Route path="login" element={<LoginRoute />} />
+        <Route path="signup" element={<SignUpRoute />} />
         <Route path="*" element={<ErrorPage />} />
       </Routes>
     </div>

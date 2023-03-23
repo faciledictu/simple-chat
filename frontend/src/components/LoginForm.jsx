@@ -1,6 +1,6 @@
 import { useFormik } from 'formik';
 import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useRollbar } from '@rollbar/react';
 import { object, string } from 'yup';
@@ -23,7 +23,6 @@ const Login = () => {
   const { t } = useTranslation();
   const [authFailed, setAuthFailed] = useState(false);
   const auth = useAuth();
-  const navigate = useNavigate();
 
   const validationSchema = object({
     username: string().required(t('errors.required')),
@@ -39,7 +38,6 @@ const Login = () => {
     onSubmit: async (values) => {
       try {
         await auth.logIn(values);
-        navigate('/');
       } catch (error) {
         formik.setSubmitting(false);
         if (error.isAxiosError && error.response.status === 401) {
