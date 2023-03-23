@@ -16,8 +16,8 @@ const DEFAULT_LANGUAGE = 'ru';
 
 const init = async () => {
   const rollbar = new Rollbar({
-    accessToken: 'c3ffc3965ed246f392ac08ff37c8bd46',
-    environment: process.env.NODE_ENV,
+    accessToken: process.env.REACT_APP_ROLLBAR_ACCESS_TOKEN,
+    enabled: process.env.NODE_ENV === 'production',
   });
 
   const i18n = i18next.createInstance();
