@@ -14,8 +14,19 @@ import Channels from './Channels.jsx';
 import Modal from './modals/index.jsx';
 import Messages from './Messages.jsx';
 
-const Chat = () => {
+const Placeholder = () => {
   const { t } = useTranslation();
+
+  return (
+    <div className="m-auto w-auto">
+      <Spinner animation="border" variant="primary" role="status">
+        <span className="visually-hidden">{t('loading')}</span>
+      </Spinner>
+    </div>
+  );
+};
+
+const Chat = () => {
   const { connectSocket, fetchData, disconnectSocket } = useServer();
 
   useEffect(() => {
@@ -38,30 +49,18 @@ const Chat = () => {
   const currentChannelMessages = useSelector(messagesSlice.selectors.selectAll)
     .filter(({ channelId }) => channelId === currentChannelId);
 
-  const renderContent = () => {
-    if (currentChannel && currentChannelMessages) {
-      return (
-        <>
-          <Channels channels={channels} currentChannelId={currentChannelId} />
-          <Messages channel={currentChannel} messages={currentChannelMessages} />
-        </>
-      );
-    }
-
-    return (
-      <div className="m-auto w-auto">
-        <Spinner animation="border" variant="primary" role="status">
-          <span className="visually-hidden">{t('loading')}</span>
-        </Spinner>
-      </div>
-    );
-  };
-
   return (
     <>
       <Container className="h-100 my-4 overflow-hidden rounded border">
         <Row className="h-100 bg-white flex-nowrap">
-          {renderContent()}
+          {currentChannel && currentChannelMessages
+            ? (
+              <>
+                <Channels channels={channels} currentChannelId={currentChannelId} />
+                <Messages channel={currentChannel} messages={currentChannelMessages} />
+              </>
+            )
+            : <Placeholder />}
         </Row>
       </Container>
       <Modal />
