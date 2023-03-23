@@ -31,7 +31,9 @@
       "username": "User name",
       "password": "Password",
       "confirmPassword": "Confirm password",
-      "signUp": "Sign up"
+      "signUp": "Sign up",
+      "alreadyHaveAccount": "Already registered?",
+      "goToLogin": "Log in with your username"
     },
     "navbar": {
       "logOut": "Log out"

@@ -1,6 +1,6 @@
 import { useFormik } from 'formik';
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useRollbar } from '@rollbar/react';
 import { object, string, ref } from 'yup';
@@ -125,10 +125,17 @@ const Login = () => {
                   className="mb-3 w-100"
                   disabled={formik.isSubmitting}
                 >
-                  {t('login.signIn')}
+                  {t('signUp.signUp')}
                 </Button>
               </Form>
             </Card.Body>
+            <Card.Footer className="p-4">
+              <div className="text-muted text-center">
+                <span>{t('signUp.alreadyHaveAccount')}</span>
+                {' '}
+                <Link to="/login">{t('signUp.goToLogin')}</Link>
+              </div>
+            </Card.Footer>
           </Card>
         </Col>
       </Row>

@@ -31,7 +31,9 @@
       "username": "Имя пользователя",
       "password": "Пароль",
       "confirmPassword": "Подтвердите пароль",
-      "signUp": "Зарегистрироваться"
+      "signUp": "Зарегистрироваться",
+      "alreadyHaveAccount": "Уже зарегистрированы?",
+      "goToLogin": "Войдите под своим именем"
     },
     "navbar": {
       "logOut": "Выйти"
