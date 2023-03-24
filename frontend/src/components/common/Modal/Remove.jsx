@@ -10,6 +10,7 @@ import Modal from 'react-bootstrap/Modal';
 
 import useServer from '../../../hooks/useServer.js';
 import ChannelName from '../ChannelName.jsx';
+import { selectors as modalSelectors } from '../../../slices/modalSlice.js';
 
 const Remove = ({ handleClose }) => {
   const rollbar = useRollbar();
@@ -17,7 +18,7 @@ const Remove = ({ handleClose }) => {
   const submitRef = useRef();
   const { removeChannel } = useServer();
 
-  const { channelId, channelName } = useSelector((state) => state.modal.context);
+  const { channelId, channelName } = useSelector(modalSelectors.getModalContext);
 
   const handleSubmit = async (e) => {
     e.preventDefault();

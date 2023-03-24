@@ -11,7 +11,8 @@ import Modal from 'react-bootstrap/Modal';
 
 import useServer from '../../../hooks/useServer.js';
 import useAutoFocus from '../../../hooks/useAutoFocus';
-import * as channelsSlice from '../../../slices/channelsSlice.js';
+import { selectors as channelsSelectors } from '../../../slices/channelsSlice.js';
+import { selectors as modalSelectors } from '../../../slices/modalSlice.js';
 
 const Rename = ({ handleClose }) => {
   const rollbar = useRollbar();
@@ -20,17 +21,16 @@ const Rename = ({ handleClose }) => {
 
   const inputRef = useAutoFocus();
 
-  const { channelId, channelName } = useSelector((state) => state.modal.context);
+  const { channelId, channelName } = useSelector(modalSelectors.getModalContext);
 
-  const existingChannelNames = useSelector(channelsSlice.selectors.selectAll)
-    .map(({ name }) => name)
+  const otherChannelNames = useSelector(channelsSelectors.selectAllChannelNames)
     .filter((name) => name !== channelName);
 
   const validationSchema = object({
     name: string()
       .trim()
       .required('errors.required')
-      .notOneOf(existingChannelNames, 'errors.notUnique')
+      .notOneOf(otherChannelNames, 'errors.notUnique')
       .min(3, 'errors.outOfLenght')
       .max(20, 'errors.outOfLenght'),
   });

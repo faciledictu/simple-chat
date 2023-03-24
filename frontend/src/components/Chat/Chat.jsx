@@ -7,8 +7,8 @@ import Row from 'react-bootstrap/Row';
 import Spinner from 'react-bootstrap/Spinner';
 
 import useServer from '../../hooks/useServer.js';
-import * as channelsSlice from '../../slices/channelsSlice.js';
-import * as messagesSlice from '../../slices/messagesSlice.js';
+import { selectors as channelsSelectors } from '../../slices/channelsSlice.js';
+import { selectors as messagesSelectors } from '../../slices/messagesSlice.js';
 
 import Channels from './components/Channels.jsx';
 import Modal from '../common/Modal/index.jsx';
@@ -38,16 +38,11 @@ const Chat = () => {
     };
   }, []);
 
-  const channels = useSelector(channelsSlice.selectors.selectAll);
+  const channels = useSelector(channelsSelectors.selectAllChannels);
 
-  const currentChannelId = useSelector((state) => state.channels.currentChannelId);
+  const currentChannel = useSelector(channelsSelectors.selectCurrentChannel);
 
-  const currentChannel = useSelector((state) => (
-    channelsSlice.selectors.selectById(state, currentChannelId)
-  ));
-
-  const currentChannelMessages = useSelector(messagesSlice.selectors.selectAll)
-    .filter(({ channelId }) => channelId === currentChannelId);
+  const currentChannelMessages = useSelector(messagesSelectors.selectCurrentChannelMessages);
 
   return (
     <>
@@ -56,7 +51,7 @@ const Chat = () => {
           {currentChannel && currentChannelMessages
             ? (
               <>
-                <Channels channels={channels} currentChannelId={currentChannelId} />
+                <Channels channels={channels} currentChannelId={currentChannel.id} />
                 <Messages channel={currentChannel} messages={currentChannelMessages} />
               </>
             )

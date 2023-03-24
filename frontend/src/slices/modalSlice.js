@@ -23,6 +23,11 @@ const channelsSlice = createSlice({
 });
 
 const { actions } = channelsSlice;
+const selectors = {
+  getModalType: (state) => state.modal.type,
+  isModalOpened: (state) => state.modal.isOpened,
+  getModalContext: (state) => state.modal.context,
+};
 
-export { actions };
+export { actions, selectors };
 export default channelsSlice.reducer;

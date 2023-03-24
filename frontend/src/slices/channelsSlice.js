@@ -30,7 +30,16 @@ const channelsSlice = createSlice({
 });
 
 const { actions } = channelsSlice;
-const selectors = channelsAdapter.getSelectors((state) => state.channels);
 
-export { actions, selectors };
+const selectors = channelsAdapter.getSelectors((state) => state.channels);
+const customSelectors = {
+  selectAllChannels: selectors.selectAll,
+  selectAllChannelNames: (state) => selectors.selectAll(state).map(({ name }) => name),
+  selectCurrentChannel: (state) => {
+    const { currentChannelId } = state.channels;
+    return selectors.selectById(state, currentChannelId);
+  },
+};
+
+export { actions, customSelectors as selectors };
 export default channelsSlice.reducer;

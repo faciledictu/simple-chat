@@ -10,15 +10,14 @@ import Form from 'react-bootstrap/Form';
 import Modal from 'react-bootstrap/Modal';
 
 import useServer from '../../../hooks/useServer.js';
-import * as channelsSlice from '../../../slices/channelsSlice.js';
+import { selectors as channelsSelectors } from '../../../slices/channelsSlice.js';
 
 const Add = ({ handleClose }) => {
   const rollbar = useRollbar();
   const { t } = useTranslation();
   const { createChannel } = useServer();
 
-  const existingChannelNames = useSelector(channelsSlice.selectors.selectAll)
-    .map(({ name }) => name);
+  const existingChannelNames = useSelector(channelsSelectors.selectAllChannelNames);
 
   const validationSchema = object({
     name: string()

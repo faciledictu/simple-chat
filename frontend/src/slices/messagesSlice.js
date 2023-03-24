@@ -23,7 +23,16 @@ const messagesSlice = createSlice({
 });
 
 const { actions } = messagesSlice;
-const selectors = messagesAdapter.getSelectors((state) => state.messages);
 
-export { actions, selectors };
+const selectors = messagesAdapter.getSelectors((state) => state.messages);
+const customSelectors = {
+  selectAllMessages: selectors.selectAll,
+  selectCurrentChannelMessages: (state) => {
+    const { currentChannelId } = state.channels;
+    return selectors.selectAll(state)
+      .filter(({ channelId }) => channelId === currentChannelId);
+  },
+};
+
+export { actions, customSelectors as selectors };
 export default messagesSlice.reducer;
