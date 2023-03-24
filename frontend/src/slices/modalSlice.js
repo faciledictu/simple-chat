@@ -18,8 +18,6 @@ const channelsSlice = createSlice({
     },
     close: (state) => {
       state.isOpened = false;
-      state.type = null;
-      state.context = null;
     },
   },
 });
