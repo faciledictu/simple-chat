@@ -3,7 +3,7 @@ import Col from 'react-bootstrap/Col';
 
 import MessageForm from './MessageForm.jsx';
 import MessageList from './MessageList.jsx';
-import ChannelName from './ChannelName.jsx';
+import ChannelName from '../../common/ChannelName.jsx';
 
 const MessageHeader = ({ channelName, messagesCount }) => {
   const { t } = useTranslation();

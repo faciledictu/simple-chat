@@ -7,7 +7,7 @@ import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 
 import { useTranslation } from 'react-i18next';
-import useAuth from '../hooks/useAuth.js';
+import useAuth from '../../hooks/useAuth.js';
 
 const LanguageSelector = () => {
   const { t, i18n } = useTranslation();

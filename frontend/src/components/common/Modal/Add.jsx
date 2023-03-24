@@ -9,8 +9,8 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import Modal from 'react-bootstrap/Modal';
 
-import useServer from '../../hooks/useServer.js';
-import * as channelsSlice from '../../slices/channelsSlice.js';
+import useServer from '../../../hooks/useServer.js';
+import * as channelsSlice from '../../../slices/channelsSlice.js';
 
 const Add = ({ handleClose }) => {
   const rollbar = useRollbar();

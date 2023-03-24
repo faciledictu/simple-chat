@@ -18,7 +18,7 @@
         "link": "Go to Hexlet Chat"
       }
     },
-    "login": {
+    "logIn": {
       "header": "Sign in",
       "username": "Your nickname",
       "password": "Your password",

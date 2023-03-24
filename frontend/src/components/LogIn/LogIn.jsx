@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useRollbar } from '@rollbar/react';
-import { object, string, ref } from 'yup';
+import { object, string } from 'yup';
 import { toast } from 'react-toastify';
 
 import Alert from 'react-bootstrap/Alert';
@@ -16,45 +16,36 @@ import Form from 'react-bootstrap/Form';
 import Image from 'react-bootstrap/Image';
 import Row from 'react-bootstrap/Row';
 
-import useAuth from '../hooks/useAuth.js';
+import useAuth from '../../hooks/useAuth.js';
 
-const Login = () => {
+const LogIn = () => {
   const rollbar = useRollbar();
   const { t } = useTranslation();
   const [authFailed, setAuthFailed] = useState(false);
   const auth = useAuth();
 
   const validationSchema = object({
-    username: string()
-      .trim()
-      .required('errors.required')
-      .min(3, 'errors.outOfLenght')
-      .max(20, 'errors.outOfLenght'),
-    password: string()
-      .required('errors.required')
-      .min(6, 'errors.min6chars'),
-    confirmPassword: string()
-      .oneOf([ref('password')], 'errors.notSame'),
+    username: string().required(t('errors.required')),
+    password: string().required(t('errors.required')),
   });
 
   const formik = useFormik({
     initialValues: {
       username: '',
       password: '',
-      confirmPassword: '',
     },
     validationSchema,
     onSubmit: async (values) => {
       try {
-        await auth.signUp(values);
+        await auth.logIn(values);
       } catch (error) {
         formik.setSubmitting(false);
-        if (error.isAxiosError && error.response.status === 409) {
+        if (error.isAxiosError && error.response.status === 401) {
           setAuthFailed(true);
           return;
         }
         toast.error(t('errors.noConnection'));
-        rollbar.error('SignUp', error);
+        rollbar.error('LogIn', error);
       }
     },
   });
@@ -66,55 +57,39 @@ const Login = () => {
           <Card>
             <Card.Body className="row p-5">
               <Col xs={12} md={6} className="d-flex align-items-center justify-content-center">
-                <Image src={`${process.env.PUBLIC_URL}/images/signup.jpg`} roundedCircle alt={t('signUp.header')} />
+                <Image src={`${process.env.PUBLIC_URL}/images/login.jpg`} roundedCircle alt={t('logIn.header')} />
               </Col>
-              <Form noValidate onSubmit={formik.handleSubmit} className="col-12 col-12 col-md-6">
-                <h1 className="text-center mb-4 h3">{t('signUp.header')}</h1>
+              <Form onSubmit={formik.handleSubmit} className="col-12 col-12 col-md-6">
+                <h1 className="text-center mb-4 h3">{t('logIn.header')}</h1>
 
-                <FloatingLabel controlId="username" label={t('signUp.username')} className="mb-3">
+                <FloatingLabel controlId="username" label={t('logIn.username')} className="mb-3">
                   <Form.Control
                     type="text"
                     value={formik.values.username}
-                    placeholder={t('signUp.username')}
+                    placeholder={t('logIn.username')}
                     name="username"
-                    isInvalid={!!formik.errors.username}
+                    isInvalid={authFailed}
                     onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
+                    required
                     autoFocus
                     disabled={formik.isSubmitting}
                   />
-                  <Form.Control.Feedback type="invalid" tooltip>{t(formik.errors.username)}</Form.Control.Feedback>
                 </FloatingLabel>
 
-                <FloatingLabel controlId="password" label={t('signUp.password')} className="mb-3">
+                <FloatingLabel controlId="password" label={t('logIn.password')} className="mb-3">
                   <Form.Control
                     type="password"
                     value={formik.values.password}
-                    placeholder={t('signUp.password')}
+                    placeholder={t('logIn.password')}
                     name="password"
-                    isInvalid={!!formik.errors.password && formik.touched.password}
+                    isInvalid={authFailed}
                     onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
+                    required
                     disabled={formik.isSubmitting}
                   />
-                  <Form.Control.Feedback type="invalid" tooltip>{t(formik.errors.password)}</Form.Control.Feedback>
                 </FloatingLabel>
 
-                <FloatingLabel controlId="confirmPassword" label={t('signUp.confirmPassword')} className="mb-3">
-                  <Form.Control
-                    type="password"
-                    value={formik.values.confirmPassword}
-                    placeholder={t('signUp.confirmPassword')}
-                    name="confirmPassword"
-                    isInvalid={!!formik.errors.confirmPassword && formik.touched.confirmPassword}
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                    disabled={formik.isSubmitting}
-                  />
-                  <Form.Control.Feedback type="invalid" tooltip>{t(formik.errors.confirmPassword)}</Form.Control.Feedback>
-                </FloatingLabel>
-
-                {authFailed ? <Alert variant="danger">{t('errors.userExists')}</Alert> : null}
+                {authFailed ? <Alert variant="danger">{t('errors.authFailed')}</Alert> : null}
 
                 <Button
                   variant="outline-primary"
@@ -123,15 +98,15 @@ const Login = () => {
                   className="mb-3 w-100"
                   disabled={formik.isSubmitting}
                 >
-                  {t('signUp.signUp')}
+                  {t('logIn.signIn')}
                 </Button>
               </Form>
             </Card.Body>
             <Card.Footer className="p-4">
               <div className="text-muted text-center">
-                <span>{t('signUp.alreadyHaveAccount')}</span>
+                <span>{t('logIn.noAccount')}</span>
                 {' '}
-                <Link to="/login">{t('signUp.goToLogin')}</Link>
+                <Link to="/signup">{t('logIn.createOne')}</Link>
               </div>
             </Card.Footer>
           </Card>
@@ -141,4 +116,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default LogIn;

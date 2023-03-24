@@ -6,13 +6,13 @@ import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Spinner from 'react-bootstrap/Spinner';
 
-import useServer from '../hooks/useServer.js';
-import * as channelsSlice from '../slices/channelsSlice.js';
-import * as messagesSlice from '../slices/messagesSlice.js';
+import useServer from '../../hooks/useServer.js';
+import * as channelsSlice from '../../slices/channelsSlice.js';
+import * as messagesSlice from '../../slices/messagesSlice.js';
 
-import Channels from './Channels.jsx';
-import Modal from './modals/index.jsx';
-import Messages from './Messages.jsx';
+import Channels from './components/Channels.jsx';
+import Modal from '../common/Modal/index.jsx';
+import Messages from './components/Messages.jsx';
 
 const Placeholder = () => {
   const { t } = useTranslation();

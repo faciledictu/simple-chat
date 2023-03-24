@@ -9,9 +9,9 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
 
-import useAuth from '../hooks/useAuth.js';
-import useServer from '../hooks/useServer.js';
-import useAutoFocus from '../hooks/useAutoFocus.js';
+import useAuth from '../../../hooks/useAuth.js';
+import useServer from '../../../hooks/useServer.js';
+import useAutoFocus from '../../../hooks/useAutoFocus.js';
 
 const MessageForm = ({ channelId }) => {
   const rollbar = useRollbar();

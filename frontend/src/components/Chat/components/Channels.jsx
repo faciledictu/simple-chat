@@ -6,9 +6,9 @@ import Button from 'react-bootstrap/Button';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
 import Dropdown from 'react-bootstrap/Dropdown';
 
-import * as channelsSlice from '../slices/channelsSlice.js';
-import * as modalSlice from '../slices/modalSlice.js';
-import ChannelName from './ChannelName.jsx';
+import * as channelsSlice from '../../../slices/channelsSlice.js';
+import * as modalSlice from '../../../slices/modalSlice.js';
+import ChannelName from '../../common/ChannelName.jsx';
 
 const PersistentChannel = ({
   name, isActive, variant, onSelect,

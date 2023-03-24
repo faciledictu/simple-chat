@@ -18,7 +18,7 @@
         "link": "Перейти в Hexlet Chat"
       }
     },
-    "login": {
+    "logIn": {
       "header": "Вход",
       "username": "Ваш ник",
       "password": "Пароль",

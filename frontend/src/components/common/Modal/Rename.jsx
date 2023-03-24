@@ -9,9 +9,9 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import Modal from 'react-bootstrap/Modal';
 
-import useServer from '../../hooks/useServer.js';
-import useAutoFocus from '../../hooks/useAutoFocus';
-import * as channelsSlice from '../../slices/channelsSlice.js';
+import useServer from '../../../hooks/useServer.js';
+import useAutoFocus from '../../../hooks/useAutoFocus';
+import * as channelsSlice from '../../../slices/channelsSlice.js';
 
 const Rename = ({ handleClose }) => {
   const rollbar = useRollbar();
@@ -55,7 +55,7 @@ const Rename = ({ handleClose }) => {
   const nameIsInvalid = formik.errors.name && formik.values.name !== '';
 
   return (
-    <Modal show onHide={handleClose}>
+    <>
       <Modal.Header closeButton>
         <Modal.Title>{t('modals.renameTitle')}</Modal.Title>
       </Modal.Header>
@@ -79,7 +79,7 @@ const Rename = ({ handleClose }) => {
           </Form.Group>
         </Form>
       </Modal.Body>
-    </Modal>
+    </>
   );
 };
 

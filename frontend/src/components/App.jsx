@@ -5,12 +5,13 @@ import { ToastContainer, Slide } from 'react-toastify';
 
 import useAuth from '../hooks/useAuth.js';
 
-import Chat from './Chat.jsx';
-import ErrorPage from './ErrorPage.jsx';
-import LoginForm from './LoginForm.jsx';
-import SignUpForm from './SignUpForm.jsx';
-import NavBar from './NavBar.jsx';
+import Chat from './Chat/Chat.jsx';
+import ErrorPage from './Errors/ErrorPage.jsx';
+import LogIn from './LogIn/LogIn.jsx';
+import SignUp from './SignUp/SignUp.jsx';
+import NavBar from './common/NavBar.jsx';
 
+import 'bootstrap/dist/css/bootstrap.min.css';
 import 'react-toastify/dist/ReactToastify.css';
 import '../style.css';
 
@@ -19,14 +20,14 @@ const ChatRoute = () => {
   return loggedIn ? <Chat /> : <Navigate to="login" />;
 };
 
-const LoginRoute = () => {
+const LogInRoute = () => {
   const { loggedIn } = useAuth();
-  return loggedIn ? <Navigate to="/" /> : <LoginForm />;
+  return loggedIn ? <Navigate to="/" /> : <LogIn />;
 };
 
 const SignUpRoute = () => {
   const { loggedIn } = useAuth();
-  return loggedIn ? <Navigate to="/" /> : <SignUpForm />;
+  return loggedIn ? <Navigate to="/" /> : <SignUp />;
 };
 
 const App = () => (
@@ -35,7 +36,7 @@ const App = () => (
       <NavBar />
       <Routes>
         <Route path="/" element={<ChatRoute />} />
-        <Route path="login" element={<LoginRoute />} />
+        <Route path="login" element={<LogInRoute />} />
         <Route path="signup" element={<SignUpRoute />} />
         <Route path="*" element={<ErrorPage />} />
       </Routes>

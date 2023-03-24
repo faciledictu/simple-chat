@@ -8,7 +8,7 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import Modal from 'react-bootstrap/Modal';
 
-import useServer from '../../hooks/useServer.js';
+import useServer from '../../../hooks/useServer.js';
 import ChannelName from '../ChannelName.jsx';
 
 const Remove = ({ handleClose }) => {
