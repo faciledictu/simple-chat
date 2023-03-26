@@ -76,7 +76,7 @@ const Channels = ({ channels, currentChannelId }) => {
 
   return (
     <Col xs={4} md={3} className="border-end p-0 bg-light d-flex flex-column">
-      <div className="p-2 pt-5 d-flex justify-content-between align-items-center">
+      <div className="ps-3 pe-2 pt-5 pb-2 d-flex justify-content-between align-items-center">
         <div className="text-truncate"><b>{t('chat.channels')}</b></div>
         <Button variant="outline-primary" className="rounded-circle p-0 d-flex align-items-center" onClick={handleAdd}>
           <svg
