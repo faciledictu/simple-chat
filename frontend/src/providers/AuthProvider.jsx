@@ -1,12 +1,15 @@
 import { useMemo, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import axios from 'axios';
 
 import routes from '../routes.js';
 import AuthContext from '../contexts/AuthContext.js';
+import { actions as loadingStatusActions } from '../slices/loadingStatusSlice.js';
 
 const AuthProvider = ({ children }) => {
-  const userFromStorage = JSON.parse(localStorage.getItem('user'));
+  const dispatch = useDispatch();
 
+  const userFromStorage = JSON.parse(localStorage.getItem('user'));
   const [user, setUser] = useState(userFromStorage);
 
   const logIn = async (userData) => {
@@ -17,6 +20,7 @@ const AuthProvider = ({ children }) => {
 
   const logOut = () => {
     localStorage.removeItem('user');
+    dispatch(loadingStatusActions.unload());
     setUser(null);
   };
 

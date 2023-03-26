@@ -1,6 +1,8 @@
 /* eslint-disable no-param-reassign */
 import { createSlice } from '@reduxjs/toolkit';
 
+import { actions as loadingStatusActions } from './loadingStatusSlice.js';
+
 const initialState = ({
   isOpened: false,
   type: null,
@@ -19,6 +21,10 @@ const channelsSlice = createSlice({
     close: (state) => {
       state.isOpened = false;
     },
+  },
+  extraReducers: (builder) => {
+    builder
+      .addCase(loadingStatusActions.unload, () => initialState);
   },
 });
 

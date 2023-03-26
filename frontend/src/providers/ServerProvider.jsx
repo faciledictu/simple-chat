@@ -53,17 +53,15 @@ const ServerProvider = ({ socket, children }) => {
     socket.disconnect();
   };
 
-  const fetchData = async () => {
+  const getServerData = async () => {
     const route = routes.data();
     const headers = getAuthHeader();
-    const { data } = await axios.get(route, { headers });
-    dispatch(channelsSlice.actions.addChannels(data.channels));
-    dispatch(messagesSlice.actions.addMessages(data.messages));
-    dispatch(channelsSlice.actions.setCurrentChannel(data.currentChannelId));
+    const response = await axios.get(route, { headers });
+    return response;
   };
 
   const context = useMemo(() => ({
-    fetchData,
+    getServerData,
     connectSocket,
     sendMessage,
     createChannel,

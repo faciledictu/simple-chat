@@ -4,6 +4,7 @@
     "appName": "Hexlet Chat",
     "loading": "Loading...",
     "errors": {
+      "authError": "Authorization error. Please log in again",
       "noConnection": "Connection error",
       "required": "Please fill out",
       "authFailed": "Wrong username or password",
