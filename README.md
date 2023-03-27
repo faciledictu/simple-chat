@@ -6,6 +6,8 @@ Hexlet Chat is a group chat app with the ability to create an unlimited number o
 
 This is my studying project at Hexlet School.
 
+[![Hexlet Chat](app-screenshot.png)](http://faciledictu-frontend-project-12.up.railway.app)
+
 Demo: [faciledictu-frontend-project-12.up.railway.app](http://faciledictu-frontend-project-12.up.railway.app)
 
 ## Installation
