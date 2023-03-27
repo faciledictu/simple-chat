@@ -34,6 +34,7 @@ const Login = () => {
       .required('errors.required')
       .min(6, 'errors.min6chars'),
     confirmPassword: string()
+      .required('errors.required')
       .oneOf([ref('password')], 'errors.notSame'),
   });
 
