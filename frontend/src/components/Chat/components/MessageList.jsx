@@ -3,7 +3,7 @@ import LeoProfanity from 'leo-profanity';
 
 import useAuth from '../../../hooks/useAuth.js';
 
-const MESSAGE_TYPE = 'bubble';
+const MESSAGE_TYPE = 'withTime';
 
 const scrollToMarker = (marker, behavior = 'auto') => {
   marker.scrollIntoView({
