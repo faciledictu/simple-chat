@@ -38,7 +38,7 @@ const init = async () => {
   profanityFilter.add(profanityFilter.getDictionary('ru'));
 
   return (
-    <RollbarProvider instance={rollbar}>
+    <RollbarProvider config={rollbar}>
       <ErrorBoundary>
         <I18nextProvider i18n={i18n}>
           <Provider store={store}>
