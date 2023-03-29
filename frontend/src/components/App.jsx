@@ -1,5 +1,5 @@
 import {
-  BrowserRouter, Routes, Route, Navigate,
+  BrowserRouter, Routes, Route, Navigate, Outlet,
 } from 'react-router-dom';
 import { ToastContainer, Slide } from 'react-toastify';
 
@@ -14,20 +14,16 @@ import NavBar from './common/NavBar.jsx';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'react-toastify/dist/ReactToastify.css';
 import '../style.css';
+import routes from '../routes.js';
 
-const ChatRoute = () => {
+const PrivateOutlet = () => {
   const { loggedIn } = useAuth();
-  return loggedIn ? <Chat /> : <Navigate to="login" />;
+  return loggedIn ? <Outlet /> : <Navigate to={routes.loginPage()} />;
 };
 
-const LogInRoute = () => {
+const PublicOutlet = () => {
   const { loggedIn } = useAuth();
-  return loggedIn ? <Navigate to="/" /> : <LogIn />;
-};
-
-const SignUpRoute = () => {
-  const { loggedIn } = useAuth();
-  return loggedIn ? <Navigate to="/" /> : <SignUp />;
+  return loggedIn ? <Navigate to={routes.chatPage()} /> : <Outlet />;
 };
 
 const App = () => (
@@ -35,9 +31,15 @@ const App = () => (
     <div className="d-flex flex-column h-100">
       <NavBar />
       <Routes>
-        <Route path="/" element={<ChatRoute />} />
-        <Route path="login" element={<LogInRoute />} />
-        <Route path="signup" element={<SignUpRoute />} />
+        <Route path={routes.chatPage()} element={<PrivateOutlet />}>
+          <Route path="" element={<Chat />} />
+        </Route>
+        <Route path={routes.loginPage()} element={<PublicOutlet />}>
+          <Route path="" element={<LogIn />} />
+        </Route>
+        <Route path={routes.signupPage()} element={<PublicOutlet />}>
+          <Route path="" element={<SignUp />} />
+        </Route>
         <Route path="*" element={<ErrorPage />} />
       </Routes>
     </div>
