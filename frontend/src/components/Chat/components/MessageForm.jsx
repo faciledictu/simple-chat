@@ -4,6 +4,7 @@ import { useFormik } from 'formik';
 import { useRollbar } from '@rollbar/react';
 import { object, string } from 'yup';
 import { toast } from 'react-toastify';
+import { useEffect, useRef } from 'react';
 
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
@@ -11,14 +12,19 @@ import InputGroup from 'react-bootstrap/InputGroup';
 
 import useAuth from '../../../hooks/useAuth.js';
 import useServer from '../../../hooks/useServer.js';
-import useAutoFocus from '../../../hooks/useAutoFocus.js';
 
 const MessageForm = ({ channelId }) => {
   const rollbar = useRollbar();
   const { t } = useTranslation();
   const { sendMessage } = useServer();
   const { getUserName } = useAuth();
-  const messageInputRef = useAutoFocus();
+  const messageInputRef = useRef();
+
+  useEffect(() => {
+    if (messageInputRef.current) {
+      messageInputRef.current.focus();
+    }
+  }, [channelId]);
 
   const validationSchema = object({
     body: string()
