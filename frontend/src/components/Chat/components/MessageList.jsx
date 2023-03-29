@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react';
 import LeoProfanity from 'leo-profanity';
 
-import useAuth from '../../../hooks/useAuth.js';
+import { useAuth } from '../../../providers/AuthProvider.jsx';
 
 const MESSAGE_TYPE = 'withTime';
 

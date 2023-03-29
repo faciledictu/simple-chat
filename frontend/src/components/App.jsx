@@ -3,7 +3,7 @@ import {
 } from 'react-router-dom';
 import { ToastContainer, Slide } from 'react-toastify';
 
-import useAuth from '../hooks/useAuth.js';
+import { useAuth } from '../providers/AuthProvider.jsx';
 
 import Chat from './Chat/Chat.jsx';
 import ErrorPage from './Errors/ErrorPage.jsx';
@@ -11,10 +11,11 @@ import LogIn from './LogIn/LogIn.jsx';
 import SignUp from './SignUp/SignUp.jsx';
 import NavBar from './common/NavBar.jsx';
 
+import routes from '../routes.js';
+
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'react-toastify/dist/ReactToastify.css';
 import '../style.css';
-import routes from '../routes.js';
 
 const PrivateOutlet = () => {
   const { loggedIn } = useAuth();

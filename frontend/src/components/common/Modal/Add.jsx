@@ -9,7 +9,7 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import Modal from 'react-bootstrap/Modal';
 
-import useServer from '../../../hooks/useServer.js';
+import { useServer } from '../../../providers/ServerProvider.jsx';
 import { selectors as channelsSelectors } from '../../../slices/channelsSlice.js';
 
 const Add = ({ handleClose }) => {

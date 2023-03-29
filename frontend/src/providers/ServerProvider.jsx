@@ -1,12 +1,13 @@
-import { useMemo } from 'react';
+import { createContext, useContext, useMemo } from 'react';
 import { useDispatch } from 'react-redux';
 import axios from 'axios';
 
 import routes from '../routes.js';
 import * as channelsSlice from '../slices/channelsSlice.js';
 import * as messagesSlice from '../slices/messagesSlice.js';
-import useAuth from '../hooks/useAuth.js';
-import ServerContext from '../contexts/ServerContext.js';
+import { useAuth } from '../providers/AuthProvider.jsx';
+
+const ServerContext = createContext({});
 
 const ServerProvider = ({ socket, children }) => {
   const TIMEOUT = 4000;
@@ -77,4 +78,6 @@ const ServerProvider = ({ socket, children }) => {
   );
 };
 
+const useServer = () => useContext(ServerContext);
+export { ServerContext, useServer };
 export default ServerProvider;

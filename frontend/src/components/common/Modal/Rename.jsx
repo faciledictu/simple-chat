@@ -1,3 +1,4 @@
+import { useEffect, useRef } from 'react';
 import { useSelector } from 'react-redux';
 import { useFormik } from 'formik';
 import { useTranslation } from 'react-i18next';
@@ -9,8 +10,7 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import Modal from 'react-bootstrap/Modal';
 
-import useServer from '../../../hooks/useServer.js';
-import useAutoFocus from '../../../hooks/useAutoFocus';
+import { useServer } from '../../../providers/ServerProvider.jsx';
 import { selectors as channelsSelectors } from '../../../slices/channelsSlice.js';
 import { selectors as modalSelectors } from '../../../slices/modalSlice.js';
 
@@ -19,7 +19,13 @@ const Rename = ({ handleClose }) => {
   const { t } = useTranslation();
   const { renameChannel } = useServer();
 
-  const inputRef = useAutoFocus();
+  const inputRef = useRef();
+
+  useEffect(() => {
+    if (inputRef.current) {
+      inputRef.current.focus();
+    }
+  }, []);
 
   const { channelId, channelName } = useSelector(modalSelectors.getModalContext);
 

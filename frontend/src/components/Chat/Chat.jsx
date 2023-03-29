@@ -10,7 +10,7 @@ import Row from 'react-bootstrap/Row';
 import Spinner from 'react-bootstrap/Spinner';
 import { useNavigate } from 'react-router-dom';
 
-import useServer from '../../hooks/useServer.js';
+import { useServer } from '../../providers/ServerProvider.jsx';
 import { selectors as loadingStatusSelectors } from '../../slices/loadingStatusSlice.js';
 import { selectors as channelsSelectors } from '../../slices/channelsSlice.js';
 import { selectors as messagesSelectors } from '../../slices/messagesSlice.js';
@@ -19,7 +19,7 @@ import Channels from './components/Channels.jsx';
 import Modal from '../common/Modal/index.jsx';
 import Messages from './components/Messages.jsx';
 import fetchInitialData from '../../slices/thunks.js';
-import useAuth from '../../hooks/useAuth.js';
+import { useAuth } from '../../providers/AuthProvider.jsx';
 
 const Placeholder = () => {
   const { t } = useTranslation();

@@ -16,7 +16,7 @@ import Form from 'react-bootstrap/Form';
 import Image from 'react-bootstrap/Image';
 import Row from 'react-bootstrap/Row';
 
-import useAuth from '../../hooks/useAuth.js';
+import { useAuth } from '../../providers/AuthProvider.jsx';
 
 const Login = () => {
   const rollbar = useRollbar();

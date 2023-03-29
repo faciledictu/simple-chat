@@ -1,10 +1,13 @@
-import { useMemo, useState } from 'react';
+import {
+  createContext, useMemo, useContext, useState,
+} from 'react';
 import { useDispatch } from 'react-redux';
 import axios from 'axios';
 
 import routes from '../routes.js';
-import AuthContext from '../contexts/AuthContext.js';
 import { actions as loadingStatusActions } from '../slices/loadingStatusSlice.js';
+
+const AuthContext = createContext({});
 
 const AuthProvider = ({ children }) => {
   const dispatch = useDispatch();
@@ -47,4 +50,6 @@ const AuthProvider = ({ children }) => {
   );
 };
 
+const useAuth = () => useContext(AuthContext);
+export { AuthContext, useAuth };
 export default AuthProvider;
