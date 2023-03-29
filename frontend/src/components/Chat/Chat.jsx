@@ -4,9 +4,11 @@ import { useTranslation } from 'react-i18next';
 import { useRollbar } from '@rollbar/react';
 import { toast } from 'react-toastify';
 
+import Button from 'react-bootstrap/Button';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Spinner from 'react-bootstrap/Spinner';
+import { useNavigate } from 'react-router-dom';
 
 import useServer from '../../hooks/useServer.js';
 import { selectors as loadingStatusSelectors } from '../../slices/loadingStatusSlice.js';
@@ -29,6 +31,41 @@ const Placeholder = () => {
       </Spinner>
     </div>
   );
+};
+
+const Error = () => {
+  const { t } = useTranslation();
+  const navigate = useNavigate();
+
+  return (
+    <div className="m-auto w-auto text-center">
+      <p className="lead">{t('errors.failed.description')}</p>
+      <Button onClick={() => navigate(0)}>{t('errors.failed.link')}</Button>
+    </div>
+  );
+};
+
+const InnerContent = () => {
+  const loadingState = useSelector(loadingStatusSelectors.getStatus);
+  const channels = useSelector(channelsSelectors.selectAllChannels);
+  const currentChannel = useSelector(channelsSelectors.selectCurrentChannel);
+  const currentChannelMessages = useSelector(messagesSelectors.selectCurrentChannelMessages);
+
+  switch (loadingState) {
+    case 'successful':
+      return (
+        <>
+          <Channels channels={channels} currentChannelId={currentChannel.id} />
+          <Messages channel={currentChannel} messages={currentChannelMessages} />
+        </>
+      );
+
+    case 'failed':
+      return <Error />;
+
+    default:
+      return <Placeholder />;
+  }
 };
 
 const Chat = () => {
@@ -58,8 +95,7 @@ const Chat = () => {
         break;
 
       case 'failed':
-        toast.error(t('errors.noConnection'));
-        rollbar.error('Chat#noConnection');
+        rollbar.error('Chat#failed');
         break;
 
       default:
@@ -67,22 +103,11 @@ const Chat = () => {
     }
   }, [loadingState]);
 
-  const channels = useSelector(channelsSelectors.selectAllChannels);
-  const currentChannel = useSelector(channelsSelectors.selectCurrentChannel);
-  const currentChannelMessages = useSelector(messagesSelectors.selectCurrentChannelMessages);
-
   return (
     <>
       <Container className="h-100 my-4 overflow-hidden rounded border">
         <Row className="h-100 bg-white flex-nowrap">
-          {loadingState === 'successful'
-            ? (
-              <>
-                <Channels channels={channels} currentChannelId={currentChannel.id} />
-                <Messages channel={currentChannel} messages={currentChannelMessages} />
-              </>
-            )
-            : <Placeholder />}
+          <InnerContent />
         </Row>
       </Container>
       <Modal />

@@ -17,6 +17,10 @@
         "title": "Page not found",
         "description": "There's nothing here",
         "link": "Go to Hexlet Chat"
+      },
+      "failed": {
+        "description": "Something went wrong",
+        "link": "Reload page"
       }
     },
     "logIn": {
