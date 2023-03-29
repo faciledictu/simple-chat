@@ -25,8 +25,8 @@ const LogIn = () => {
   const auth = useAuth();
 
   const validationSchema = object({
-    username: string().required(t('errors.required')),
-    password: string().required(t('errors.required')),
+    username: string().required('errors.required'),
+    password: string().required('errors.required'),
   });
 
   const formik = useFormik({
