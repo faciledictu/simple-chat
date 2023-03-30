@@ -82,7 +82,7 @@ const Chat = () => {
     return () => {
       disconnectSocket();
     };
-  }, []);
+  }, [connectSocket, disconnectSocket, dispatch, getServerData]);
 
   const loadingState = useSelector(loadingStatusSelectors.getStatus);
 
@@ -101,7 +101,7 @@ const Chat = () => {
       default:
         break;
     }
-  }, [loadingState]);
+  }, [loadingState, logOut, rollbar, t]);
 
   return (
     <>

@@ -1,4 +1,5 @@
 /* eslint-disable no-param-reassign */
+/* eslint-disable functional/immutable-data */
 import { createEntityAdapter, createSlice } from '@reduxjs/toolkit';
 
 import { actions as loadingStatusActions } from './loadingStatusSlice.js';
