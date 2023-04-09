@@ -20,12 +20,6 @@ const MessageForm = ({ channelId }) => {
   const { getUserName } = useAuth();
   const messageInputRef = useRef();
 
-  useEffect(() => {
-    if (messageInputRef.current) {
-      messageInputRef.current.focus();
-    }
-  }, [channelId]);
-
   const validationSchema = object({
     body: string()
       .trim()
@@ -55,6 +49,12 @@ const MessageForm = ({ channelId }) => {
       }
     },
   });
+
+  useEffect(() => {
+    if (!formik.isSubmitting) {
+      messageInputRef.current.focus();
+    }
+  }, [formik.isSubmitting, channelId]);
 
   return (
     <Form className="p-3" onSubmit={formik.handleSubmit}>
