@@ -41,12 +41,17 @@ npm start
 ## Built with
 
 [![React][React-badge]][React-url]
+[![Redux][Redux-badge]][Redux-url]
 [![Bootstrap][Bootstrap-badge]][Bootstrap-url]
-[![i18next][i18next-badge]][i18next-url]
 [![Axios][Axios-badge]][Axios-url]
+[![i18next][i18next-badge]][i18next-url]
+[![Formik][Formik-badge]][Formik-url]
 
 [React-badge]: https://img.shields.io/badge/React-087ea4?style=flat&logo=react&logoColor=white
 [React-url]: https://react.dev
+
+[Redux-badge]: https://img.shields.io/badge/Redux-764abc?style=flat&logo=redux
+[Redux-url]: https://redux.js.org
 
 [Bootstrap-badge]: https://img.shields.io/badge/Bootstrap-712CF9?style=flat&logo=bootstrap&logoColor=white
 [Bootstrap-url]: https://getbootstrap.com
@@ -56,3 +61,6 @@ npm start
 
 [Axios-badge]: https://img.shields.io/badge/Axios-5A29E4?style=flat&logo=axios&logoColor=white
 [Axios-url]: https://axios-http.com
+
+[Formik-badge]: https://img.shields.io/badge/Formik-357af3?style=flat&logo=formik
+[Formik-url]: https://formik.org
