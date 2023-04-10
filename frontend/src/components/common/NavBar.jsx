@@ -50,7 +50,7 @@ const NavBar = () => {
   const { t } = useTranslation();
   return (
     <Navbar bg="white" expand="sm" variant="light" className="border-bottom">
-      <Container className="p-0 gap-2">
+      <Container className="gap-2">
         <Navbar.Brand as={Link} to="/">
           {t('appName')}
         </Navbar.Brand>

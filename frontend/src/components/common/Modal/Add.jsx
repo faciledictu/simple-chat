@@ -63,10 +63,10 @@ const Add = ({ handleClose }) => {
             <Form.Control.Feedback type="invalid">{t(formik.errors.name)}</Form.Control.Feedback>
           </Form.Group>
           <Form.Group className="d-flex gap-2 col-12 justify-content-end">
-            <Button variant="outline-primary" onClick={handleClose} className="col-3">
+            <Button variant="outline-primary" onClick={handleClose}>
               {t('modals.cancel')}
             </Button>
-            <Button variant="primary" type="submit" className="col-3" disabled={formik.isSubmitting}>
+            <Button variant="primary" type="submit" disabled={formik.isSubmitting}>
               {t('modals.send')}
             </Button>
           </Form.Group>

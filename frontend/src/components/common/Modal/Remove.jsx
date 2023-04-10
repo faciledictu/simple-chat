@@ -48,10 +48,10 @@ const Remove = ({ handleClose }) => {
         </div>
         <Form onSubmit={handleSubmit}>
           <Form.Group className="d-flex gap-2 col-12 justify-content-end">
-            <Button variant="outline-primary" onClick={handleClose} className="col-3">
+            <Button variant="outline-primary" onClick={handleClose}>
               {t('modals.cancel')}
             </Button>
-            <Button disabled={isSubmitting} variant="danger" type="submit" className="col-3" ref={submitRef}>
+            <Button disabled={isSubmitting} variant="danger" type="submit" ref={submitRef}>
               {t('modals.remove')}
             </Button>
           </Form.Group>
